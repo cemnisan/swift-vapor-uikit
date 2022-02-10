@@ -8,49 +8,52 @@
 import Vapor
 
 final class ListController {
+    var service: IListService
+    
+    init(service: IListService) {
+        self.service = service
+    }
+}
+
+extension ListController {
     func getAllLists(_ req: Request) -> EventLoopFuture<[List]> {
-       return List.query(on: req.db).all()
+        let allLists = service.getAllList(from: req.db)
+        
+        return allLists
     }
     
-    func getListById(_ req: Request) -> EventLoopFuture<List> {
-        return List
-            .find(req.parameters.get("id"),
-                             on: req.db)
-            .unwrap(or: Abort(.notFound))
+    func getListById(_ req: Request) throws -> EventLoopFuture<List> {
+        guard let listID = req.parameters.get("id", as: UUID.self) else {
+            throw Abort(.badRequest)
+        }
+        let list = service.getList(with: listID, from: req.db)
+        
+        return list
     }
     
     func createList(_ req: Request) throws -> EventLoopFuture<List> {
-        let list = try req.content.decode(List.self)
-        
-        return list.save(on: req.db).map {
-            list
-        }
+        let decodedList = try req.content.decode(List.self)
+        let createdList = try service.creaeteList(with: decodedList, to: req.db)
+
+        return createdList
     }
     
     func updateListById(_ req: Request) throws -> EventLoopFuture<List> {
-        let updatedList = try req.content.decode(List.self)
+        guard let id = req.parameters.get("id", as: UUID.self) else {
+            throw Abort(.badRequest)
+        }
+        let decodedList = try req.content.decode(List.self)
+        let updatedList = service.updateList(with: id, decodedList, from: req.db)
         
-        return List.find(
-                req.parameters.get("id"),
-                on: req.db)
-            .unwrap(or: Abort(.notFound))
-            .flatMap { list in
-                list.title = updatedList.title
-                list.content = updatedList.content
-                return list.save(on: req.db).map {
-                    list
-                }
-            }
+        return updatedList
     }
     
-    func deleteListById(_ req: Request) -> EventLoopFuture<HTTPStatus> {
-        return List.find(
-                req.parameters.get("id"),
-                on: req.db)
-            .unwrap(or: Abort(.notFound))
-            .flatMap { list in
-                list.delete(on: req.db)
-                    .transform(to: .noContent)
-            }
+    func deleteListById(_ req: Request) throws -> EventLoopFuture<HTTPStatus> {
+        guard let id = req.parameters.get("id", as: UUID.self) else {
+            throw Abort(.badRequest)
+        }
+        let deletedList = service.deleteList(with: id, from: req.db)
+        
+        return deletedList
     }
 }

@@ -1,8 +1,8 @@
 import Vapor
 
 func routes(_ app: Application) throws {
-    let listRoutesGroup = app.grouped("api", "list")
-    let listController = ListController()
+    let listRoutesGroup = app.grouped("api", "v1", "list")
+    let listController = ListController(service: ListService())
     
     listRoutesGroup.get("", use: listController.getAllLists(_:))
     listRoutesGroup.post("", use: listController.createList(_:))
