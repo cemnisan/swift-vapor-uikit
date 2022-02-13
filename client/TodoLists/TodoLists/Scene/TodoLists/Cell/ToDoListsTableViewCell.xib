@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ListsCell" rowHeight="116" id="KGk-i7-Jjw" customClass="ToDoListsTableViewCell" customModule="TodoLists" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="272" height="116"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="272" height="116"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alışveriş" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iC8-Id-gXB">
+                        <rect key="frame" x="20" y="8" width="232" height="20.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12 Şubat 2022" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zb7-jm-pgb">
+                        <rect key="frame" x="186" y="10" width="70" height="16.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lorem  Lorem ipsum Lorem ipsumLorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a07-Jk-IiX">
+                        <rect key="frame" x="16" y="36.5" width="236" height="74"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="a07-Jk-IiX" firstAttribute="top" secondItem="iC8-Id-gXB" secondAttribute="bottom" constant="8" symbolic="YES" id="3Rk-0m-ZLN"/>
+                    <constraint firstAttribute="trailing" secondItem="a07-Jk-IiX" secondAttribute="trailing" constant="20" id="AcG-bN-sfQ"/>
+                    <constraint firstAttribute="trailing" secondItem="zb7-jm-pgb" secondAttribute="trailing" constant="16" id="DSp-oc-TdH"/>
+                    <constraint firstItem="iC8-Id-gXB" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="Kep-PH-Qm7"/>
+                    <constraint firstItem="zb7-jm-pgb" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="L5B-lC-Neh"/>
+                    <constraint firstItem="iC8-Id-gXB" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="hW5-hU-kIJ"/>
+                    <constraint firstItem="a07-Jk-IiX" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="ktn-fy-cxV"/>
+                    <constraint firstAttribute="bottom" secondItem="a07-Jk-IiX" secondAttribute="bottom" constant="5.5" id="oBN-vQ-NiB"/>
+                    <constraint firstAttribute="trailing" secondItem="iC8-Id-gXB" secondAttribute="trailing" constant="20" id="x0b-Rq-zpz"/>
+                    <constraint firstItem="a07-Jk-IiX" firstAttribute="top" secondItem="zb7-jm-pgb" secondAttribute="bottom" constant="10" id="xfy-Rm-MDX"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="listDateLabel" destination="zb7-jm-pgb" id="Zr3-Ve-2G4"/>
+                <outlet property="listDetailLabel" destination="a07-Jk-IiX" id="jlu-oo-Qba"/>
+                <outlet property="listNameLabel" destination="iC8-Id-gXB" id="Yz6-QY-zOZ"/>
+            </connections>
+            <point key="canvasLocation" x="-115.94202898550725" y="122.54464285714285"/>
+        </tableViewCell>
+    </objects>
+</document>

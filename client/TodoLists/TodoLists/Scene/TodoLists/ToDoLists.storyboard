@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--To Do Lists View Controller-->
+        <scene sceneID="s0d-6b-0kx">
+            <objects>
+                <viewController storyboardIdentifier="ToDoListsViewController" id="Y6W-OH-hqX" customClass="ToDoListsViewController" customModule="TodoLists" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Mwq-kG-oNB">
+                                <rect key="frame" x="0.0" y="92" width="414" height="770"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ListsCell" id="gh9-xY-EJC" customClass="ToDoListsTableViewCell" customModule="TodoLists" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="24.5" width="414" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gh9-xY-EJC" id="eC5-cj-mxQ">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="MES-9K-H8L">
+                                <rect key="frame" x="50" y="52" width="314" height="31"/>
+                                <segments>
+                                    <segment title="Tamamlanmadı (100)"/>
+                                    <segment title="Tamamlandı (100)"/>
+                                </segments>
+                                <connections>
+                                    <action selector="segmentPressed:" destination="Y6W-OH-hqX" eventType="valueChanged" id="pWQ-7n-OIA"/>
+                                </connections>
+                            </segmentedControl>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="FCk-ry-FKx">
+                                <rect key="frame" x="197" y="438" width="20" height="20"/>
+                            </activityIndicatorView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Mwq-kG-oNB" firstAttribute="bottom" secondItem="vDu-zF-Fre" secondAttribute="bottom" id="5hR-7A-Dzj"/>
+                            <constraint firstItem="FCk-ry-FKx" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="9rx-gL-IgC"/>
+                            <constraint firstItem="Mwq-kG-oNB" firstAttribute="top" secondItem="MES-9K-H8L" secondAttribute="bottom" constant="10" id="Cee-SI-TWT"/>
+                            <constraint firstItem="Mwq-kG-oNB" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="48" id="N8t-0r-Hqg"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="MES-9K-H8L" secondAttribute="trailing" constant="50" id="bPx-o2-nwN"/>
+                            <constraint firstItem="Mwq-kG-oNB" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="i6Q-qC-9WC"/>
+                            <constraint firstItem="MES-9K-H8L" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="50" id="lcv-yr-PIR"/>
+                            <constraint firstItem="MES-9K-H8L" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="8" id="qtk-hp-96t"/>
+                            <constraint firstItem="Mwq-kG-oNB" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="r4g-BM-YIQ"/>
+                            <constraint firstItem="FCk-ry-FKx" firstAttribute="centerY" secondItem="5EZ-qb-Rvc" secondAttribute="centerY" id="xl7-Dd-ik4"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="completionSegment" destination="MES-9K-H8L" id="sJY-1X-2f0"/>
+                        <outlet property="loadingActivityIndicator" destination="FCk-ry-FKx" id="Med-bf-QbQ"/>
+                        <outlet property="tableView" destination="Mwq-kG-oNB" id="3tO-7g-wzZ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-65.217391304347828" y="88.392857142857139"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
