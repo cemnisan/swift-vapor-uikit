@@ -7,6 +7,7 @@
 
 import Vapor
 
+
 final class ListController {
     var service: IListService
     
@@ -16,17 +17,20 @@ final class ListController {
 }
 
 extension ListController {
-    func getAllLists(_ req: Request) -> EventLoopFuture<[List]> {
-        let allLists = service.getAllList(from: req.db)
+    
+    func getAllLists(_ req: Request) throws -> EventLoopFuture<ListResponse<[List]>> {
+        let allLists = try service.getAllList(from: req.db)
         
-        return allLists
+        return allLists.map { lists in
+            ListResponse<[List]>(results: lists)
+        }
     }
     
     func getListById(_ req: Request) throws -> EventLoopFuture<List> {
         guard let listID = req.parameters.get("id", as: UUID.self) else {
             throw Abort(.badRequest)
         }
-        let list = service.getList(with: listID, from: req.db)
+        let list = try service.getList(with: listID, from: req.db)
         
         return list
     }
@@ -43,7 +47,7 @@ extension ListController {
             throw Abort(.badRequest)
         }
         let decodedList = try req.content.decode(List.self)
-        let updatedList = service.updateList(with: id, decodedList, from: req.db)
+        let updatedList = try service.updateList(with: id, decodedList, from: req.db)
         
         return updatedList
     }
@@ -52,7 +56,7 @@ extension ListController {
         guard let id = req.parameters.get("id", as: UUID.self) else {
             throw Abort(.badRequest)
         }
-        let deletedList = service.deleteList(with: id, from: req.db)
+        let deletedList = try service.deleteList(with: id, from: req.db)
         
         return deletedList
     }
