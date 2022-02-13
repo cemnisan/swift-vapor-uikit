@@ -9,6 +9,7 @@ import Foundation
 import ToDoListsAPI
 
 struct ToDoListService: IToDoListService {
+    
     func getAllLists(completion: @escaping (Result<ListResponse>) -> Void)  {
         NetworkManager.shared.request(
             request: .allLists,
@@ -17,6 +18,21 @@ struct ToDoListService: IToDoListService {
             switch results {
             case .success(let lists):
                 completion(.success(lists))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func addLists(with title: String,
+                  _ content: String,
+                  completion: @escaping (Result<NewListResponse>) -> Void) {
+        NetworkManager.shared.request(
+            request: .addList(title, content),
+            responseModel: NewListResponse.self) { (results) in
+            switch results {
+            case .success(let newList):
+                completion(.success(newList))
             case .failure(let error):
                 completion(.failure(error))
             }

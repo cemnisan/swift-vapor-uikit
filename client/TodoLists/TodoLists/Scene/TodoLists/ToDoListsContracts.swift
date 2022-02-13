@@ -10,10 +10,12 @@ import Foundation
 protocol ToDoListViewModelProtocol {
     var delegate: ToDoListViewModelDelegate? { get set }
     func load()
+    func add(with title: String, _ content: String)
 }
 
 enum ToDoListViewModelOutput {
     case setLoading(Bool)
+    case showSuccessAdded(Bool)
     case showToDoLists([ToDoListPresentation])
     case showError(Error)
 }

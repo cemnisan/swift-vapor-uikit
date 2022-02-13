@@ -14,3 +14,11 @@ public struct ListResponse: Codable {
         self.results = results
     }
 }
+
+public struct NewListResponse: Codable {
+    public let results: List
+    
+    init(result: List) {
+        self.results = result
+    }
+}

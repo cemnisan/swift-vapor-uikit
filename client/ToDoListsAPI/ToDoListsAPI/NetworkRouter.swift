@@ -12,6 +12,7 @@ public enum NetworkRouter: URLRequestConvertible {
     case allLists
     case deleteList(id: UUID)
     case updateList(id: UUID)
+    case addList(_ title: String, _ content: String)
     
     private var method: HTTPMethod {
         switch self {
@@ -21,12 +22,16 @@ public enum NetworkRouter: URLRequestConvertible {
             return .delete
         case .updateList:
             return .put
+        case .addList:
+            return .post
         }
     }
     
     private var path: String {
         switch self {
         case .allLists:
+            return "/list"
+        case .addList:
             return "/list"
         case .updateList(let id):
             return "/list/\(id)"
@@ -39,6 +44,11 @@ public enum NetworkRouter: URLRequestConvertible {
         switch self {
         case .allLists, .deleteList, .updateList:
             return nil
+        case .addList(let title, let content):
+            return [
+                "title": title,
+                "content": content
+            ]
         }
     }
     
