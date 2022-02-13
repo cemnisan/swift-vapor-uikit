@@ -56,7 +56,6 @@ extension ToDoListViewModel {
                 self.notify(.showSuccessAdded(true))
             case .failure(let error):
                 self.notify(.showError(error))
-                self.notify(.showSuccessAdded(false))
             }
         }
     }
