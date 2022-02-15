@@ -10,7 +10,7 @@ import ToDoListsAPI
 
 struct ToDoListService: IToDoListService {
     
-    func getAllLists(completion: @escaping (Result<ListResponse>) -> Void)  {
+    func getLists(completion: @escaping (Result<ListResponse>) -> Void)  {
         NetworkManager.shared.request(
             request: .allLists,
             responseModel: ListResponse.self

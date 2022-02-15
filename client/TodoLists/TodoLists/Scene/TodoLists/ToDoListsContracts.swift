@@ -9,13 +9,13 @@ import Foundation
 
 protocol ToDoListViewModelProtocol {
     var delegate: ToDoListViewModelDelegate? { get set }
-    func load()
+    func load(with segmenTitle: SelectSegmentTitle)
     func add(with title: String, _ content: String)
 }
 
 enum ToDoListViewModelOutput {
     case setLoading(Bool)
-    case showSuccessAdded(Bool)
+    case showSuccessAdded(Bool, ToDoListPresentation)
     case showToDoLists([ToDoListPresentation])
     case showError(Error)
 }

@@ -33,13 +33,38 @@
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="FCk-ry-FKx">
                                 <rect key="frame" x="197" y="438" width="20" height="20"/>
                             </activityIndicatorView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f5U-K1-4p0">
+                                <rect key="frame" x="144.5" y="385.5" width="125" height="125"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8lI-kW-Sdf">
+                                        <rect key="frame" x="27.5" y="26.5" width="70" height="72"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="70.5" id="2qb-Zq-qgO"/>
+                                            <constraint firstAttribute="width" constant="70" id="Ldy-nx-kom"/>
+                                        </constraints>
+                                        <color key="tintColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <state key="normal" backgroundImage="checkmark.seal.fill" catalog="system">
+                                            <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="0.83920138888888884" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="125" id="F7s-Ny-27m"/>
+                                    <constraint firstItem="8lI-kW-Sdf" firstAttribute="centerY" secondItem="f5U-K1-4p0" secondAttribute="centerY" id="b1E-nW-kCu"/>
+                                    <constraint firstAttribute="height" constant="125" id="b9Y-0N-aUc"/>
+                                    <constraint firstItem="8lI-kW-Sdf" firstAttribute="centerX" secondItem="f5U-K1-4p0" secondAttribute="centerX" id="r4m-TM-4Og"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="Mwq-kG-oNB" firstAttribute="bottom" secondItem="vDu-zF-Fre" secondAttribute="bottom" id="5hR-7A-Dzj"/>
+                            <constraint firstItem="f5U-K1-4p0" firstAttribute="centerY" secondItem="5EZ-qb-Rvc" secondAttribute="centerY" id="9Bs-ap-4tq"/>
                             <constraint firstItem="FCk-ry-FKx" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="9rx-gL-IgC"/>
                             <constraint firstItem="Mwq-kG-oNB" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="N8t-0r-Hqg"/>
+                            <constraint firstItem="f5U-K1-4p0" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="dNd-HN-NZQ"/>
                             <constraint firstItem="Mwq-kG-oNB" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="i6Q-qC-9WC"/>
                             <constraint firstItem="Mwq-kG-oNB" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="r4g-BM-YIQ"/>
                             <constraint firstItem="FCk-ry-FKx" firstAttribute="centerY" secondItem="5EZ-qb-Rvc" secondAttribute="centerY" id="xl7-Dd-ik4"/>
@@ -70,6 +95,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="checkMarkView" destination="f5U-K1-4p0" id="Nus-75-CC5"/>
                         <outlet property="completionSegment" destination="eLc-aU-vHz" id="eIx-79-6dZ"/>
                         <outlet property="loadingActivityIndicator" destination="FCk-ry-FKx" id="Med-bf-QbQ"/>
                         <outlet property="tableView" destination="Mwq-kG-oNB" id="3tO-7g-wzZ"/>
@@ -82,6 +108,7 @@
         <!--Navigation Controller-->
         <scene sceneID="17H-GV-7RJ">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lXf-X5-AAa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="0NQ-8R-iAM" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="z9p-2g-XuB">
@@ -93,13 +120,13 @@
                         <segue destination="Y6W-OH-hqX" kind="relationship" relationship="rootViewController" id="fqF-Lk-Zsm"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="lXf-X5-AAa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-65.217391304347828" y="88.392857142857139"/>
         </scene>
     </scenes>
     <resources>
         <image name="arrow.clockwise" catalog="system" width="115" height="128"/>
+        <image name="checkmark.seal.fill" catalog="system" width="128" height="128"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

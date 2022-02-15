@@ -28,6 +28,7 @@ extension NetworkManager {
                     let decoder = JSONDecoder()
                     do {
                         let successRes = try decoder.decode(responseModel, from: data)
+
                         completion(.success(successRes))
                     } catch {
                         completion(.failure(error))

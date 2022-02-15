@@ -9,11 +9,10 @@ import Foundation
 import ToDoListsAPI
 
 final class ToDoListViewModel: ToDoListViewModelProtocol {
-    
+
     weak var delegate: ToDoListViewModelDelegate?
     private let service: IToDoListService
     private var todoLists: [List] = []
-    private var presentation: [ToDoListPresentation] = []
     
     init(service: IToDoListService) {
         self.service = service
@@ -22,24 +21,24 @@ final class ToDoListViewModel: ToDoListViewModelProtocol {
 
 extension ToDoListViewModel {
     
-    func load() {
+    func load(with segmenTitle: SelectSegmentTitle) {
         notify(.setLoading(true))
         
-        service.getAllLists { [weak self] results in
+        service.getLists { [weak self] results in
             guard let self = self else { return }
             self.notify(.setLoading(false))
             
             switch results {
             case .success(let lists):
                 self.todoLists = lists.results
-                self.presentation = self.todoLists.map { ToDoListPresentation(title: $0.title, content: $0.content) }
-                self.notify(.showToDoLists(self.presentation))
+                let presentation = self.filterData(with: segmenTitle)
+                self.notify(.showToDoLists(presentation))
             case .failure(let error):
                 self.notify(.showError(error))
             }
         }
     }
-    
+        
     func add(with title: String, _ content: String) {
         notify(.setLoading(true))
         
@@ -49,11 +48,8 @@ extension ToDoListViewModel {
             
             switch results {
             case .success(let newList):
-                self.todoLists.append(newList.results)
-                let lastList = self.todoLists.filter { $0.id == newList.results.id }.map { ToDoListPresentation(title: $0.title, content: $0.content )}
-                self.presentation += lastList
-                self.notify(.showToDoLists(self.presentation))
-                self.notify(.showSuccessAdded(true))
+                let addedList = ToDoListPresentation(list: newList.results)
+                self.notify(.showSuccessAdded(true, addedList))
             case .failure(let error):
                 self.notify(.showError(error))
             }
@@ -62,5 +58,18 @@ extension ToDoListViewModel {
     
     private func notify(_ output: ToDoListViewModelOutput) {
         delegate?.handleToDoListViewModelOutput(output)
+    }
+    
+    private func filterData(with segmenTitle: SelectSegmentTitle) -> [ToDoListPresentation] {
+        var presentation: [ToDoListPresentation] = []
+        
+        switch segmenTitle {
+        case .completed:
+            presentation += todoLists.filter { $0.isCompleted == true }.map { ToDoListPresentation(list: $0)}
+            return presentation
+        case .notCompleted:
+            presentation += todoLists.filter { $0.isCompleted != true }.map { ToDoListPresentation(list: $0)}
+            return presentation
+        }
     }
 }

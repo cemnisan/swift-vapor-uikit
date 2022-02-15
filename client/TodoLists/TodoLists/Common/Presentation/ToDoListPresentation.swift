@@ -6,17 +6,19 @@
 //
 
 import Foundation
+import ToDoListsAPI
 
 final class ToDoListPresentation: NSObject {
     let title: String
     let content: String
+    let isCompleted: Bool
     
     init(
-        title: String,
-        content: String
+        list: List
     ) {
-        self.title = title
-        self.content = content
+        self.title = list.title
+        self.content = list.content
+        self.isCompleted = list.isCompleted
         
         super.init()
     }

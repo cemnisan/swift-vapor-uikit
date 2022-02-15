@@ -21,15 +21,20 @@ final class List: Model {
     @Field(key: "content")
     var content: String
     
+    @Field(key: "isCompleted")
+    var isCompleted: Bool
+    
     init() { }
     
     init(id: UUID? = nil,
          title: String,
-         content: String
+         content: String,
+         isCompleted: Bool = false
     ) {
         self.id = id
         self.title = title
         self.content = content
+        self.isCompleted = isCompleted
     }
 }
 

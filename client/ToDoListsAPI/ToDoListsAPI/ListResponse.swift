@@ -18,7 +18,7 @@ public struct ListResponse: Codable {
 public struct NewListResponse: Codable {
     public let results: List
     
-    init(result: List) {
-        self.results = result
+    init(results: List) {
+        self.results = results
     }
 }

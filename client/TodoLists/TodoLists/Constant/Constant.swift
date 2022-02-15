@@ -12,4 +12,9 @@ struct Constant {
         static let listsCell = "ListsCell"
         static let listsNibName = "ToDoListsTableViewCell"
     }
+    
+    struct SegmentTitle {
+        static let completed = "Tamamlandı (10)"
+        static let notCompleted = "Tamamlanmadı (10)"
+    }
 }

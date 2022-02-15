@@ -10,6 +10,7 @@ import ToDoListsAPI
 
 final class ToDoListsViewController: UIViewController {
     
+    @IBOutlet weak var checkMarkView: UIView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var completionSegment: UISegmentedControl!
     @IBOutlet weak var loadingActivityIndicator: UIActivityIndicatorView!
@@ -22,32 +23,55 @@ final class ToDoListsViewController: UIViewController {
     
     var todoLists: [ToDoListPresentation] = []
     
+    var selectedSegment: String?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configureUIElement()
         configureTableView()
-        todoListViewModel.load()
+        fetchLists()
+    }
+}
+
+// MARK: - Fetch List
+extension ToDoListsViewController {
+    private func fetchLists() {
+        // 1. When the view is loaded, fetch first segment title's items (first segment: .notCompleted)
+        // 2. If the user selects any segment title (for ex: .completed) fetch `.completed` list.
+        if let segmentsTitle = selectedSegment {
+            let getSegmentsTitle = SelectSegmentTitle.getTitle(with: segmentsTitle)!
+            todoListViewModel.load(with: getSegmentsTitle)
+        } else {
+            todoListViewModel.load(with: .notCompleted)
+        }
     }
 }
 
 // MARK: - Buttons Pressed.
 extension ToDoListsViewController {
-    @IBAction func segmentPressed(_ sender: UISegmentedControl) {} // todo
+    @IBAction func segmentPressed(_ sender: UISegmentedControl) {
+        selectedSegment = sender.titleForSegment(at: sender.selectedSegmentIndex)
+        
+        fetchLists()
+    }
     
     @IBAction func refreshButtonPressed(_ sender: UIBarButtonItem) {
-        todoListViewModel.load()
+        fetchLists()
     }
 
     // todo: 1. code refactoring. 2. may you can write cleaner.
     @IBAction func addListPressed(_ sender: UIBarButtonItem) {
         let alertController = UIAlertController(title: "Add New To Do", message: "", preferredStyle: .alert)
+        
         alertController.addTextField { (titleTextField) in
             titleTextField.placeholder = "Enter To Do's Title."
         }
+        
         alertController.addTextField { (detailTextField) in
             detailTextField.placeholder = "Enter To Do's Detail."
         }
+        
         let saveAction = UIAlertAction(title: "Save", style: .default) { _ in
             let titleTextField = alertController.textFields![0] as UITextField
             let detailTextField = alertController.textFields![1] as UITextField
@@ -55,6 +79,7 @@ extension ToDoListsViewController {
             guard let title = titleTextField.text, let detail = detailTextField.text else { return }
             self.todoListViewModel.add(with: title, detail)
         }
+        
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         
         alertController.addAction(saveAction)
@@ -78,6 +103,29 @@ extension ToDoListsViewController {
     
     private func configureUIElement() {
         loadingActivityIndicator.isHidden = false
+        checkMarkView.isHidden = true
+        
+        checkMarkView.layer.cornerRadius = 6
+    }
+    
+    private func configureLoadingIndicator(with isLoading: Bool) {
+        
+        if (isLoading) {
+            loadingActivityIndicator.isHidden = false
+        } else {
+            loadingActivityIndicator.isHidden = true
+        }
+    }
+    
+    private func configureMarkView(with isAdded: Bool) {
+        print(isAdded)
+        if (isAdded) {
+            checkMarkView.isHidden = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.checkMarkView.isHidden = true
+                
+            }
+        }
     }
 }
 
@@ -85,16 +133,19 @@ extension ToDoListsViewController {
 extension ToDoListsViewController: ToDoListViewModelDelegate {
     
     func handleToDoListViewModelOutput(_ output: ToDoListViewModelOutput) {
+        
         switch output {
         case .setLoading(let isLoading):
-            print(isLoading) // todo: show loading indicator view when without data.
+            configureLoadingIndicator(with: isLoading)
         case .showToDoLists(let lists):
             todoLists = lists
             tableView.reloadData()
         case .showError(let error):
             print(error) // todo: show error message.
-        case .showSuccessAdded(let isAdded):
-            print(isAdded) // todo: show success message when new todo list added.
+        case .showSuccessAdded(let isAdded, let newList):
+            todoLists.append(newList)
+            configureMarkView(with: isAdded)
+            tableView.reloadData()
         }
     }
 }
@@ -103,12 +154,14 @@ extension ToDoListsViewController: ToDoListViewModelDelegate {
 extension ToDoListsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView,
-                   numberOfRowsInSection section: Int) -> Int {
+                   numberOfRowsInSection section: Int) -> Int
+    {
         return todoLists.count
     }
     
     func tableView(_ tableView: UITableView,
-                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+                   cellForRowAt indexPath: IndexPath) -> UITableViewCell
+    {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constant.TableView.listsCell,
                                                  for: indexPath) as! ToDoListsTableViewCell
         let todoList = todoLists[indexPath.row]
