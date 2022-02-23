@@ -14,7 +14,7 @@ struct Constant {
     }
     
     struct SegmentTitle {
-        static let completed = "Tamamlandı (10)"
-        static let notCompleted = "Tamamlanmadı (10)"
+        static let completed = "Tamamlandı"
+        static let notCompleted = "Tamamlanmadı"
     }
 }

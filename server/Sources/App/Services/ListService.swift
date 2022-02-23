@@ -11,21 +11,21 @@ import Fluent
 
 struct ListService: IListService {
     
-    func getAllList(from db: Database) throws -> EventLoopFuture<[List]> {
+    func get(from db: Database) throws -> EventLoopFuture<[List]> {
         return List.query(on: db).all()
     }
     
-    func getList(with id: UUID,
+    func get(with id: UUID,
                  from db: Database) throws -> EventLoopFuture<List> {
         return List.find(id, on: db).unwrap(or: Abort(.notFound))
     }
     
-    func creaeteList(with decodedList: List,
+    func create(with decodedList: List,
                      to db: Database) throws -> EventLoopFuture<List> {
         return decodedList.save(on: db).map { decodedList }
     }
     
-    func updateList(with id: UUID,
+    func update(with id: UUID,
                     _ decodedList: List,
                     from db: Database) throws -> EventLoopFuture<List> {
         return List
@@ -39,7 +39,7 @@ struct ListService: IListService {
             }
     }
     
-    func deleteList(with id: UUID,
+    func delete(with id: UUID,
                     from db: Database) throws -> EventLoopFuture<HTTPStatus> {
         return List
             .find(id, on: db)

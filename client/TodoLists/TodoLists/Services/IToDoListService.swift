@@ -10,5 +10,5 @@ import ToDoListsAPI
 
 protocol IToDoListService {
     func getLists(completion: @escaping (Result<ListResponse>) -> Void)
-    func addLists(with title: String, _ content: String, completion: @escaping (Result<NewListResponse>) -> Void)
+    func addList(with title: String, _ content: String, completion: @escaping (Result<NewListResponse>) -> Void)
 }

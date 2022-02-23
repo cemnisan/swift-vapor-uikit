@@ -24,7 +24,7 @@ struct ToDoListService: IToDoListService {
         }
     }
     
-    func addLists(with title: String,
+    func addList(with title: String,
                   _ content: String,
                   completion: @escaping (Result<NewListResponse>) -> Void) {
         NetworkManager.shared.request(

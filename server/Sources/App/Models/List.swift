@@ -21,9 +21,9 @@ final class List: Model {
     @Field(key: "content")
     var content: String
     
-    @Field(key: "isCompleted")
-    var isCompleted: Bool
-    
+    @OptionalField(key: "isCompleted")
+    var isCompleted: Bool?
+
     init() { }
     
     init(id: UUID? = nil,

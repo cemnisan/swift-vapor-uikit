@@ -19,7 +19,7 @@ final class ListController {
 extension ListController {
     
     func getAllLists(_ req: Request) throws -> EventLoopFuture<ListResponse<[List]>> {
-        let allLists = try service.getAllList(from: req.db)
+        let allLists = try service.get(from: req.db)
         
         // return JSON.
         return allLists.map { lists in
@@ -31,7 +31,7 @@ extension ListController {
         guard let listID = req.parameters.get("id", as: UUID.self) else {
             throw Abort(.badRequest)
         }
-        let foundList = try service.getList(with: listID, from: req.db)
+        let foundList = try service.get(with: listID, from: req.db)
         
         return foundList.map { list in
             ListResponse<List>(results: list, statusCode: .ok)
@@ -40,7 +40,7 @@ extension ListController {
     
     func createList(_ req: Request) throws -> EventLoopFuture<ListResponse<List>> {
         let decodedList = try req.content.decode(List.self)
-        let createdList = try service.creaeteList(with: decodedList, to: req.db)
+        let createdList = try service.create(with: decodedList, to: req.db)
 
         return createdList.map { newList in
             ListResponse<List>(results: newList, statusCode: .created)
@@ -52,7 +52,7 @@ extension ListController {
             throw Abort(.badRequest)
         }
         let decodedList = try req.content.decode(List.self)
-        let updatedList = try service.updateList(with: id, decodedList, from: req.db)
+        let updatedList = try service.update(with: id, decodedList, from: req.db)
         
         return updatedList.map { list in
             ListResponse<List>(results: list, statusCode: .ok)
@@ -63,7 +63,7 @@ extension ListController {
         guard let id = req.parameters.get("id", as: UUID.self) else {
             throw Abort(.badRequest)
         }
-        let deletedList = try service.deleteList(with: id, from: req.db)
+        let deletedList = try service.delete(with: id, from: req.db)
         
         return deletedList
     }

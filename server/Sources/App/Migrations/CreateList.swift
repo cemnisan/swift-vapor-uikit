@@ -18,8 +18,7 @@ struct CreateList: Migration {
                    .string,
                    .required)
             .field("isCompleted",
-                   .bool,
-                   .required)
+                   .bool)
             .create()
     }
     

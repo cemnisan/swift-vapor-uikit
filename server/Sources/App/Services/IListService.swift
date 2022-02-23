@@ -10,18 +10,18 @@ import Fluent
 
 protocol IListService {
     
-    func getAllList(from db: Database) throws -> EventLoopFuture<[List]>
+    func get(from db: Database) throws -> EventLoopFuture<[List]>
     
-    func getList(with id: UUID,
+    func get(with id: UUID,
                  from db: Database) throws -> EventLoopFuture<List>
     
-    func creaeteList( with decodedList: List,
+    func create(with decodedList: List,
                       to db: Database) throws -> EventLoopFuture<List>
     
-    func updateList(with id: UUID,
+    func delete(with id: UUID,
+                    from db: Database) throws -> EventLoopFuture<HTTPStatus>
+    
+    func update(with id: UUID,
                     _ decodedList: List,
                     from db: Database) throws -> EventLoopFuture<List>
-    
-    func deleteList(with id: UUID,
-                    from db: Database) throws -> EventLoopFuture<HTTPStatus>
 }

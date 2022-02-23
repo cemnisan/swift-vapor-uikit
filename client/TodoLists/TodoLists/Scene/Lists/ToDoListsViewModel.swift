@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 import ToDoListsAPI
 
 final class ToDoListViewModel: ToDoListViewModelProtocol {
@@ -38,31 +39,18 @@ extension ToDoListViewModel {
             }
         }
     }
-        
-    func add(with title: String, _ content: String) {
-        notify(.setLoading(true))
-        
-        service.addLists(with: title, content) {[weak self] results in
-            guard let self = self else { return }
-            self.notify(.setLoading(false))
-            
-            switch results {
-            case .success(let newList):
-                let addedList = ToDoListPresentation(list: newList.results)
-                self.notify(.showSuccessAdded(true, addedList))
-            case .failure(let error):
-                self.notify(.showError(error))
-            }
-        }
-    }
     
+    func selectAddButton() {
+        let viewModel = AddListViewModel(service: service)
+        delegate?.navigate(to: .add(viewModel))
+    }
+        
     private func notify(_ output: ToDoListViewModelOutput) {
         delegate?.handleToDoListViewModelOutput(output)
     }
     
     private func filterData(with segmenTitle: SelectSegmentTitle) -> [ToDoListPresentation] {
         var presentation: [ToDoListPresentation] = []
-        
         switch segmenTitle {
         case .completed:
             presentation += todoLists.filter { $0.isCompleted == true }.map { ToDoListPresentation(list: $0)}

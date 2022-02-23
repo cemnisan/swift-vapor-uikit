@@ -10,17 +10,21 @@ import Foundation
 protocol ToDoListViewModelProtocol {
     var delegate: ToDoListViewModelDelegate? { get set }
     func load(with segmenTitle: SelectSegmentTitle)
-    func add(with title: String, _ content: String)
+    func selectAddButton()
 }
 
 enum ToDoListViewModelOutput {
     case setLoading(Bool)
-    case showSuccessAdded(Bool, ToDoListPresentation)
     case showToDoLists([ToDoListPresentation])
     case showError(Error)
 }
 
+enum ToDoListViewRoute {
+    case add(AddListViewModelProtocol)
+}
+
 protocol ToDoListViewModelDelegate: AnyObject {
     func handleToDoListViewModelOutput(_ output: ToDoListViewModelOutput)
+    func navigate(to route: ToDoListViewRoute)
 }
 

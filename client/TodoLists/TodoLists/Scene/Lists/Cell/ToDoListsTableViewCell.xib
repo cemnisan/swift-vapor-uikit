@@ -16,7 +16,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="272" height="116"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alışveriş" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iC8-Id-gXB">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alışveriş" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iC8-Id-gXB">
                         <rect key="frame" x="20" y="8" width="232" height="20.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
@@ -29,7 +29,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lorem  Lorem ipsum Lorem ipsumLorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a07-Jk-IiX">
-                        <rect key="frame" x="16" y="36.5" width="236" height="74"/>
+                        <rect key="frame" x="20" y="36.5" width="232" height="74"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -42,7 +42,7 @@
                     <constraint firstItem="iC8-Id-gXB" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="Kep-PH-Qm7"/>
                     <constraint firstItem="zb7-jm-pgb" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="L5B-lC-Neh"/>
                     <constraint firstItem="iC8-Id-gXB" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="hW5-hU-kIJ"/>
-                    <constraint firstItem="a07-Jk-IiX" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="ktn-fy-cxV"/>
+                    <constraint firstItem="a07-Jk-IiX" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="ktn-fy-cxV"/>
                     <constraint firstAttribute="bottom" secondItem="a07-Jk-IiX" secondAttribute="bottom" constant="5.5" id="oBN-vQ-NiB"/>
                     <constraint firstAttribute="trailing" secondItem="iC8-Id-gXB" secondAttribute="trailing" constant="20" id="x0b-Rq-zpz"/>
                     <constraint firstItem="a07-Jk-IiX" firstAttribute="top" secondItem="zb7-jm-pgb" secondAttribute="bottom" constant="10" id="xfy-Rm-MDX"/>
