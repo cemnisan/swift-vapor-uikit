@@ -22,3 +22,13 @@ public struct NewListResponse: Codable {
         self.results = results
     }
 }
+
+public struct DeleteResponse: Codable {
+    public let results: String
+    public let statusCode: Int
+    
+    init(results: String, statusCode: Int) {
+        self.results = results
+        self.statusCode = statusCode
+    }
+}

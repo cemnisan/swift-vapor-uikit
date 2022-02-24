@@ -10,14 +10,10 @@ import ToDoListsAPI
 
 final class ToDoListsViewController: UIViewController {
     
-    @IBOutlet weak var checkMarkView: UIView!
-    @IBOutlet weak var tableView: UITableView! {
-        didSet {
-            tableView.reloadData()
-        }
-    }
+    @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var completionSegment: UISegmentedControl!
     @IBOutlet weak var loadingActivityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var activityIndicatorView: UIView!
     
     var todoListViewModel: ToDoListViewModelProtocol! {
         didSet {
@@ -34,28 +30,12 @@ final class ToDoListsViewController: UIViewController {
         
         configureUIElement()
         configureTableView()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        fetchLists()
-    }
-}
-
-// MARK: - Fetch List
-extension ToDoListsViewController {
-    private func fetchLists()
-    {
-        // 1. When the view is loaded, fetch first segment title's items (first segment: .notCompleted)
-        // 2. If the user selects any segment title (for ex: .completed) fetch `.completed` list.
-        if let segmentsTitle = selectedSegment {
-            let getSegmentsTitle = SelectSegmentTitle.getTitle(with: segmentsTitle)!
-            todoListViewModel.load(with: getSegmentsTitle)
-        } else {
-            todoListViewModel.load(with: .notCompleted)
-        }
+        todoListViewModel.load(with: segmentTitle())
     }
 }
 
@@ -64,12 +44,12 @@ extension ToDoListsViewController {
     @IBAction func segmentPressed(_ sender: UISegmentedControl)
     {
         selectedSegment = sender.titleForSegment(at: sender.selectedSegmentIndex)
-        fetchLists()
+        todoListViewModel.load(with: segmentTitle())
     }
     
     @IBAction func refreshButtonPressed(_ sender: UIBarButtonItem)
     {
-        fetchLists()
+        todoListViewModel.load(with: segmentTitle())
     }
 
     // todo: 1. code refactoring. 2. may you can write cleaner.
@@ -78,7 +58,16 @@ extension ToDoListsViewController {
 
         todoListViewModel.selectAddButton()
     }
-    
+}
+
+// MARK: - Get Segment Title
+extension ToDoListsViewController {
+    private func segmentTitle() -> SelectSegmentTitle {
+        guard let segmentTitle = selectedSegment else { return .notCompleted }
+        let title = SelectSegmentTitle.getTitle(with: segmentTitle)
+        
+        return title
+    }
 }
 
 // MARK: - View Controller's Configurators
@@ -95,22 +84,25 @@ extension ToDoListsViewController {
     
     private func configureUIElement()
     {
-        loadingActivityIndicator.isHidden = false
-        
+        activityIndicatorView.isHidden = false
+        activityIndicatorView.layer.cornerRadius = 6
     }
     
     private func configureLoadingIndicator(with isLoading: Bool)
     {
         if (isLoading) {
-            loadingActivityIndicator.isHidden = false
+            activityIndicatorView.isHidden = false
+            loadingActivityIndicator.startAnimating()
         } else {
-            loadingActivityIndicator.isHidden = true
+            activityIndicatorView.isHidden = true
+            loadingActivityIndicator.stopAnimating()
         }
     }
 }
 
 // MARK: - View Model's Delegate
 extension ToDoListsViewController: ToDoListViewModelDelegate {
+    
     func navigate(to route: ToDoListViewRoute) {
         switch route {
         case .add(let viewModel):
@@ -126,6 +118,8 @@ extension ToDoListsViewController: ToDoListViewModelDelegate {
         case .showToDoLists(let lists):
             todoLists = lists
             tableView.reloadData()
+        case .successDelete(let success):
+            print(success)
         case .showError(let error):
             print(error) // todo: show error message.
         }
@@ -153,5 +147,28 @@ extension ToDoListsViewController: UITableViewDataSource {
     }
 }
 
-// MARK: - Table View's Data Delegate
-extension ToDoListsViewController: UITableViewDelegate {}
+// MARK: - Table View's Delegate
+extension ToDoListsViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView,
+                   trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration?
+    {
+        let delete = UIContextualAction(style: .destructive,
+                                        title: "Delete") { [weak self] _,_,_ in
+            guard let self = self else { return }
+            
+            let selectedList = self.todoLists[indexPath.row].id
+            let selectedSegment = self.segmentTitle()
+            
+            self.todoListViewModel.delete(with: selectedList, selectedSegment)
+        }
+        
+        let complete = UIContextualAction(style: .normal,
+                                          title: "Complete") { [weak self] _, _, _ in
+            guard let self = self else { return }
+            
+            print("complete: \(self.todoLists[indexPath.row].title)")
+        }
+        
+        return UISwipeActionsConfiguration(actions: [delete, complete])
+    }
+}

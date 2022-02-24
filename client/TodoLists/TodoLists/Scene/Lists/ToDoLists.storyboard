@@ -30,19 +30,30 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="FCk-ry-FKx">
-                                <rect key="frame" x="197" y="438" width="20" height="20"/>
-                            </activityIndicatorView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uXz-ot-CwA">
+                                <rect key="frame" x="147" y="388" width="120" height="120"/>
+                                <subviews>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="FCk-ry-FKx">
+                                        <rect key="frame" x="50" y="50" width="20" height="20"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </activityIndicatorView>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemGray2Color"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="120" id="jpd-oY-k0S"/>
+                                    <constraint firstAttribute="width" constant="120" id="qDJ-5h-xmq"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="Mwq-kG-oNB" firstAttribute="bottom" secondItem="vDu-zF-Fre" secondAttribute="bottom" id="5hR-7A-Dzj"/>
-                            <constraint firstItem="FCk-ry-FKx" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="9rx-gL-IgC"/>
+                            <constraint firstItem="uXz-ot-CwA" firstAttribute="centerY" secondItem="5EZ-qb-Rvc" secondAttribute="centerY" id="5s4-gp-dQ0"/>
                             <constraint firstItem="Mwq-kG-oNB" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="N8t-0r-Hqg"/>
+                            <constraint firstItem="uXz-ot-CwA" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="ZWV-8C-ogb"/>
                             <constraint firstItem="Mwq-kG-oNB" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="i6Q-qC-9WC"/>
                             <constraint firstItem="Mwq-kG-oNB" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="r4g-BM-YIQ"/>
-                            <constraint firstItem="FCk-ry-FKx" firstAttribute="centerY" secondItem="5EZ-qb-Rvc" secondAttribute="centerY" id="xl7-Dd-ik4"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="wbO-rn-CZf">
@@ -70,6 +81,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="activityIndicatorView" destination="uXz-ot-CwA" id="x6Y-eP-YM9"/>
                         <outlet property="completionSegment" destination="eLc-aU-vHz" id="eIx-79-6dZ"/>
                         <outlet property="loadingActivityIndicator" destination="FCk-ry-FKx" id="Med-bf-QbQ"/>
                         <outlet property="tableView" destination="Mwq-kG-oNB" id="3tO-7g-wzZ"/>
@@ -103,6 +115,9 @@
         <image name="plus" catalog="system" width="128" height="113"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray2Color">
+            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

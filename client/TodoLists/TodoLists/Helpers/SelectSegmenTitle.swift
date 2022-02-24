@@ -11,14 +11,14 @@ enum SelectSegmentTitle {
     case completed
     case notCompleted
     
-    static func getTitle(with segmentTitle: String) -> SelectSegmentTitle? {
+    static func getTitle(with segmentTitle: String) -> SelectSegmentTitle {
         switch segmentTitle {
         case Constant.SegmentTitle.completed:
             return .completed
         case Constant.SegmentTitle.notCompleted:
             return .notCompleted
         default:
-            return .completed
+            return .notCompleted
         }
     }
 }

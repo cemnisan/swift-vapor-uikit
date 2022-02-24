@@ -19,7 +19,7 @@ protocol IListService {
                       to db: Database) throws -> EventLoopFuture<List>
     
     func delete(with id: UUID,
-                    from db: Database) throws -> EventLoopFuture<HTTPStatus>
+                    from db: Database) throws -> EventLoopFuture<DeleteResponse>
     
     func update(with id: UUID,
                     _ decodedList: List,

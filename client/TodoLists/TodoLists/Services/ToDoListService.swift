@@ -38,4 +38,17 @@ struct ToDoListService: IToDoListService {
             }
         }
     }
+    
+    func deleteList(with id: UUID,
+                    completion: @escaping (Result<DeleteResponse>) -> Void) {
+        NetworkManager.shared.request(request: .deleteList(id: id),
+                                      responseModel: DeleteResponse.self) { (result) in
+            switch result {
+            case .success(let success):
+                completion(.success(success))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
 }

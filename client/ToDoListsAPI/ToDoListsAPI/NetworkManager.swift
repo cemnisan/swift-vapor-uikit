@@ -11,7 +11,7 @@ import Alamofire
 public final class NetworkManager {
     public static let shared = NetworkManager()
     
-    private init() { }
+    private init() {}
 }
 
 extension NetworkManager {

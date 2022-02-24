@@ -59,12 +59,23 @@ extension ListController {
         }
     }
     
-    func deleteListById(_ req: Request) throws -> EventLoopFuture<HTTPStatus> {
+    func deleteListById(_ req: Request) throws -> EventLoopFuture<DeleteResponse> {
         guard let id = req.parameters.get("id", as: UUID.self) else {
             throw Abort(.badRequest)
         }
-        let deletedList = try service.delete(with: id, from: req.db)
         
-        return deletedList
+        let deletedList = try service.delete(with: id, from: req.db)
+ 
+        return deletedList.map { return $0 }
+    }
+}
+
+struct DeleteResponse: Content {
+    let results: String
+    let statusCode: HTTPStatus
+    
+    init(results: String, statusCode: HTTPStatus) {
+        self.results = results
+        self.statusCode = statusCode
     }
 }

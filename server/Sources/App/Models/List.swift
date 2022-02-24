@@ -10,6 +10,7 @@ import Fluent
 import NIOHTTP2
 
 final class List: Model {
+    
     static let schema = "lists"
     
     @ID(key: .id)

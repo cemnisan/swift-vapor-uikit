@@ -6,10 +6,12 @@
 //
 
 import Foundation
+import ToDoListsAPI
 
 protocol ToDoListViewModelProtocol {
     var delegate: ToDoListViewModelDelegate? { get set }
     func load(with segmenTitle: SelectSegmentTitle)
+    func delete(with id: UUID, _ segmentTitle: SelectSegmentTitle)
     func selectAddButton()
 }
 
@@ -17,6 +19,7 @@ enum ToDoListViewModelOutput {
     case setLoading(Bool)
     case showToDoLists([ToDoListPresentation])
     case showError(Error)
+    case successDelete(Bool)
 }
 
 enum ToDoListViewRoute {

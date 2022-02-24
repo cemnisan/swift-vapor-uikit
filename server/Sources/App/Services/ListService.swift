@@ -40,13 +40,12 @@ struct ListService: IListService {
     }
     
     func delete(with id: UUID,
-                    from db: Database) throws -> EventLoopFuture<HTTPStatus> {
+                    from db: Database) throws -> EventLoopFuture<DeleteResponse> {
         return List
             .find(id, on: db)
             .unwrap(or: Abort(.notFound))
-            .flatMap { list in
-                list.delete(on: db)
-                    .transform(to: .noContent)
-        }
+            .flatMap { $0.delete(on: db) }
+            .map { DeleteResponse(results: "Has Been Deleted.", statusCode: .ok) }
     }
 }
+
