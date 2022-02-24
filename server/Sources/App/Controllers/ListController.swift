@@ -23,7 +23,7 @@ extension ListController {
         
         // return JSON.
         return allLists.map { lists in
-            ListResponse<[List]>(results: lists, statusCode: .ok)
+            ListResponse<[List]>(result: lists, statusCode: .ok)
         }
     }
     
@@ -34,7 +34,7 @@ extension ListController {
         let foundList = try service.get(with: listID, from: req.db)
         
         return foundList.map { list in
-            ListResponse<List>(results: list, statusCode: .ok)
+            ListResponse<List>(result: list, statusCode: .ok)
         }
     }
     
@@ -43,7 +43,7 @@ extension ListController {
         let createdList = try service.create(with: decodedList, to: req.db)
 
         return createdList.map { newList in
-            ListResponse<List>(results: newList, statusCode: .created)
+            ListResponse<List>(result: newList, statusCode: .created)
         }
     }
     
@@ -55,7 +55,7 @@ extension ListController {
         let updatedList = try service.update(with: id, decodedList, from: req.db)
         
         return updatedList.map { list in
-            ListResponse<List>(results: list, statusCode: .ok)
+            ListResponse<List>(result: list, statusCode: .ok)
         }
     }
     
@@ -71,11 +71,11 @@ extension ListController {
 }
 
 struct DeleteResponse: Content {
-    let results: String
+    let result: String
     let statusCode: HTTPStatus
     
-    init(results: String, statusCode: HTTPStatus) {
-        self.results = results
+    init(result: String, statusCode: HTTPStatus) {
+        self.result = result
         self.statusCode = statusCode
     }
 }

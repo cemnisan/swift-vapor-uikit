@@ -7,28 +7,12 @@
 
 import Foundation
 
-public struct ListResponse: Codable {
-    public let results: [List]
-    
-    init(results: [List]) {
-        self.results = results
-    }
-}
-
-public struct NewListResponse: Codable {
-    public let results: List
-    
-    init(results: List) {
-        self.results = results
-    }
-}
-
-public struct DeleteResponse: Codable {
-    public let results: String
+public struct ListResponse<T>: Codable where T: Codable {
+    public let result: T
     public let statusCode: Int
     
-    init(results: String, statusCode: Int) {
-        self.results = results
+    init(result: T, statusCode: Int) {
+        self.result = result
         self.statusCode = statusCode
     }
 }

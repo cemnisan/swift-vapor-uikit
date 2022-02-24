@@ -52,7 +52,6 @@ extension ToDoListsViewController {
         todoListViewModel.load(with: segmentTitle())
     }
 
-    // todo: 1. code refactoring. 2. may you can write cleaner.
     @IBAction func addListPressed(_ sender: UIBarButtonItem)
     {
 
@@ -119,7 +118,7 @@ extension ToDoListsViewController: ToDoListViewModelDelegate {
             todoLists = lists
             tableView.reloadData()
         case .successDelete(let success):
-            print(success)
+            print(success) // to do: show checkmark.
         case .showError(let error):
             print(error) // todo: show error message.
         }
@@ -158,17 +157,31 @@ extension ToDoListsViewController: UITableViewDelegate {
             
             let selectedList = self.todoLists[indexPath.row].id
             let selectedSegment = self.segmentTitle()
-            
-            self.todoListViewModel.delete(with: selectedList, selectedSegment)
+            self.alertForDeleteList(id: selectedList, segmenTitle: selectedSegment)
         }
         
         let complete = UIContextualAction(style: .normal,
                                           title: "Complete") { [weak self] _, _, _ in
             guard let self = self else { return }
-            
             print("complete: \(self.todoLists[indexPath.row].title)")
         }
         
         return UISwipeActionsConfiguration(actions: [delete, complete])
+    }
+}
+
+extension ToDoListsViewController {
+    private func alertForDeleteList(id: UUID,
+                                    segmenTitle: SelectSegmentTitle)
+    {
+        let alert = UIAlertController(title: "Delete List",
+                                      message: "Are u sure??",
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { (_) in
+            self.todoListViewModel.delete(with: id, segmenTitle)
+        }))
+        
+        self.present(alert, animated: true, completion: nil)
     }
 }

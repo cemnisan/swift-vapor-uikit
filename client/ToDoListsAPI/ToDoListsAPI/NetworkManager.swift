@@ -15,6 +15,7 @@ public final class NetworkManager {
 }
 
 extension NetworkManager {
+    
     public func request<T: Codable>(
         request: NetworkRouter,
         responseModel: T.Type,
@@ -33,6 +34,23 @@ extension NetworkManager {
                     } catch {
                         completion(.failure(error))
                     }
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            }
+        } catch {
+            completion(.failure(error))
+        }
+    }
+    
+    public func request(request: NetworkRouter,
+                        completion: @escaping (Result<Bool>) -> Void) {
+        do {
+            let urlRequest = try request.asURLRequest()
+            AF.request(urlRequest).validate().responseData { (response) in
+                switch response.result {
+                case .success(_):
+                    completion(.success(true))
                 case .failure(let error):
                     completion(.failure(error))
                 }

@@ -45,7 +45,7 @@ struct ListService: IListService {
             .find(id, on: db)
             .unwrap(or: Abort(.notFound))
             .flatMap { $0.delete(on: db) }
-            .map { DeleteResponse(results: "Has Been Deleted.", statusCode: .ok) }
+            .map { DeleteResponse(result: "Has Been Deleted.", statusCode: .ok) }
     }
 }
 

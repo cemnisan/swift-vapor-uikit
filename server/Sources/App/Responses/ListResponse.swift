@@ -8,11 +8,11 @@
 import Vapor
 
 final class ListResponse<T>: Content where T: Content {
-    let results: T
+    let result: T
     let statusCode: HTTPStatus
     
-    init(results: T, statusCode: HTTPStatus) {
-        self.results = results
+    init(result: T, statusCode: HTTPStatus) {
+        self.result = result
         self.statusCode = statusCode
     }
 }

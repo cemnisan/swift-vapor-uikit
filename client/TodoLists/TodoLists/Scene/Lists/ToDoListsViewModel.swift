@@ -22,7 +22,8 @@ final class ToDoListViewModel: ToDoListViewModelProtocol {
 
 extension ToDoListViewModel {
     
-    func load(with segmenTitle: SelectSegmentTitle) {
+    func load(with segmenTitle: SelectSegmentTitle)
+    {
         notify(.setLoading(true))
         
         service.getLists { [weak self] results in
@@ -33,10 +34,9 @@ extension ToDoListViewModel {
                 
                 switch results {
                 case .success(let lists):
-                    self.todoLists = lists.results
-                    let presentation = self.filterData(with: segmenTitle, list: self.todoLists)
-                    print("load \(self.todoLists)")
-                    self.notify(.showToDoLists(presentation))
+                    self.todoLists = lists.result
+                    let lists = self.filterData(with: self.todoLists, segmenTitle)
+                    self.notify(.showToDoLists(lists))
                 case .failure(let error):
                     self.notify(.showError(error))
                 }
@@ -44,21 +44,22 @@ extension ToDoListViewModel {
         }
     }
     
-    func delete(with id: UUID, _ segmentTitle: SelectSegmentTitle) {
+    func delete(with id: UUID, _ segmentTitle: SelectSegmentTitle)
+    {
         notify(.setLoading(true))
         
         service.deleteList(with: id) { [weak self] (results) in
             guard let self = self else { return }
+            
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 self.notify(.setLoading(false))
                 
                 switch results {
-                case .success(_):
+                case .success(let isDeleted):
                     self.todoLists = self.todoLists.filter { $0.id != id }
-                    let newList = self.filterData(with: .notCompleted, list: self.todoLists)
-                    print("deleted: \(self.todoLists)")
+                    let newList = self.filterData(with: self.todoLists, segmentTitle)
                     self.notify(.showToDoLists(newList))
-                    self.notify(.successDelete(true))
+                    self.notify(.successDelete(isDeleted))
                 case .failure(let error):
                     self.notify(.showError(error))
                 }
@@ -66,16 +67,19 @@ extension ToDoListViewModel {
         }
     }
     
-    func selectAddButton() {
+    func selectAddButton()
+    {
         let viewModel = AddListViewModel(service: service)
         delegate?.navigate(to: .add(viewModel))
     }
+
+}
+
+extension ToDoListViewModel {
     
-    private func notify(_ output: ToDoListViewModelOutput) {
-        delegate?.handleToDoListViewModelOutput(output)
-    }
-    
-    private func filterData(with segmenTitle: SelectSegmentTitle, list: [List]) -> [ToDoListPresentation] {
+    private func filterData(with list: [List],
+                            _ segmenTitle: SelectSegmentTitle) -> [ToDoListPresentation]
+    {
         var presentation: [ToDoListPresentation] = []
         
         switch segmenTitle {
@@ -87,4 +91,10 @@ extension ToDoListViewModel {
             return presentation
         }
     }
+    
+    private func notify(_ output: ToDoListViewModelOutput)
+    {
+        delegate?.handleToDoListViewModelOutput(output)
+    }
+ 
 }
