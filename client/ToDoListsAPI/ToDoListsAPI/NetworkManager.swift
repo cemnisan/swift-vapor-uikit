@@ -27,6 +27,7 @@ extension NetworkManager {
                 switch response.result {
                 case .success(let data):
                     let decoder = JSONDecoder()
+                    decoder.dateDecodingStrategy = .iso8601
                     do {
                         let successRes = try decoder.decode(responseModel, from: data)
 

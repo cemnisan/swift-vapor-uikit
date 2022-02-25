@@ -99,6 +99,19 @@ extension ToDoListsViewController {
             loadingActivityIndicator.stopAnimating()
         }
     }
+    
+    private func configureCheckMark(with isDone: Bool)
+    {
+        if (isDone) {
+            activityIndicatorView.isHidden = false
+            checkMark.isHidden = false
+            loadingActivityIndicator.isHidden = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { self.activityIndicatorView.isHidden = true }
+        } else {
+            checkMark.isHidden = true
+            activityIndicatorView.isHidden = false
+        }
+    }
 }
 
 // MARK: - View Model's Delegate
@@ -117,29 +130,14 @@ extension ToDoListsViewController: ToDoListViewModelDelegate {
         case .setLoading(let isLoading):
             configureLoadingIndicator(with: isLoading)
         case .showToDoLists(let lists):
-            todoLists = []
             todoLists = lists
             tableView.reloadData()
         case .successUpdate(let isCompleted):
             configureCheckMark(with: isCompleted)
         case .successDelete(let isDeleted):
-            configureCheckMark(with: isDeleted) // to do: show checkmark.
+            configureCheckMark(with: isDeleted)
         case .showError(let error):
             print(error) // todo: show error message.
-        }
-    }
-    
-    func configureCheckMark(with isDone: Bool)
-    {
-        print("..")
-        if (isDone) {
-            activityIndicatorView.isHidden = false
-            checkMark.isHidden = false
-            loadingActivityIndicator.isHidden = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { self.activityIndicatorView.isHidden = true }
-        } else {
-            checkMark.isHidden = true
-            activityIndicatorView.isHidden = false
         }
     }
 }
@@ -197,7 +195,7 @@ extension ToDoListsViewController: UITableViewDelegate {
 // MARK: - Create Alert For Deletion
 extension ToDoListsViewController {
     private func alertToDeleteList(id: UUID,
-                                    segmenTitle: SelectSegmentTitle)
+                                   segmenTitle: SelectSegmentTitle)
     {
         let alert = UIAlertController(
             title: "Delete List",

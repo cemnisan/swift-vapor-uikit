@@ -13,6 +13,8 @@ final class ToDoListsTableViewCell: UITableViewCell {
     @IBOutlet weak var listDetailLabel: UILabel!
     @IBOutlet weak var listDateLabel: UILabel!
     
+    private let date = Date()
+    
     override func awakeFromNib() {
         super.awakeFromNib()
     }
@@ -27,5 +29,6 @@ extension ToDoListsTableViewCell {
     func configureCell(with todoList: ToDoListPresentation) {
         listNameLabel.text = todoList.title
         listDetailLabel.text = todoList.content
+        listDateLabel.text = date.dateFormatter(format: todoList.createdAt)
     }
 }

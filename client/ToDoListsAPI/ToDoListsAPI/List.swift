@@ -8,15 +8,22 @@
 import Foundation
 
 public struct List: Codable {
-    public enum CodingKeys: String, CodingKey {
-        case title
-        case content
-        case isCompleted
-        case id
-    }
-    
+
+    public let id: UUID
     public let title:String
     public let content: String
     public let isCompleted: Bool
-    public let id: UUID
+    public let createdAt: String
+    public let updatedAt: String
+    
+    public enum CodingKeys: String, CodingKey {
+        case id
+        case title
+        case content
+        case isCompleted
+        case createdAt
+        case updatedAt
+    }
 }
+
+

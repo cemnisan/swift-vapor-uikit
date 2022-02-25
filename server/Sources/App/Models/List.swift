@@ -7,7 +7,6 @@
 
 import Vapor
 import Fluent
-import NIOHTTP2
 
 final class List: Model {
     
@@ -25,10 +24,10 @@ final class List: Model {
     @OptionalField(key: "isCompleted")
     var isCompleted: Bool?
 
-    @Timestamp(key: "created_at", on: .create)
+    @Timestamp(key: "created_at", on: .create, format: .iso8601)
     var createdAt: Date?
     
-    @Timestamp(key: "updated_at", on: .update)
+    @Timestamp(key: "updated_at", on: .update, format: .iso8601)
     var updatedAt: Date?
     
     init() { }

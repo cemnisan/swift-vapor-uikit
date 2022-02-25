@@ -32,6 +32,7 @@ struct ToDoListService: IToDoListService {
                                       responseModel: ListResponse<List>.self) { (result) in
             switch result {
             case .success(let newList):
+                print(newList)
                 completion(.success(newList))
             case .failure(let error):
                 completion(.failure(error))

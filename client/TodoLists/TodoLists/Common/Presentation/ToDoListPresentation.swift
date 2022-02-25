@@ -9,18 +9,22 @@ import Foundation
 import ToDoListsAPI
 
 final class ToDoListPresentation: NSObject {
+    let id: UUID
     let title: String
     let content: String
     let isCompleted: Bool
-    let id: UUID
+    let createdAt: String
+    let updatedAt: String
     
     init(
         list: List
     ) {
+        self.id = list.id
         self.title = list.title
         self.content = list.content
         self.isCompleted = list.isCompleted
-        self.id = list.id
+        self.createdAt = list.createdAt
+        self.updatedAt = list.updatedAt
         
         super.init()
     }
