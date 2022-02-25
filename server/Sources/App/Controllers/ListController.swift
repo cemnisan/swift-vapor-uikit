@@ -52,7 +52,9 @@ extension ListController {
             throw Abort(.badRequest)
         }
         let decodedList = try req.content.decode(List.self)
+        print("decoded: ", decodedList)
         let updatedList = try service.update(with: id, decodedList, from: req.db)
+        print("updated: ", updatedList)
         
         return updatedList.map { list in
             ListResponse<List>(result: list, statusCode: .ok)

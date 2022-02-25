@@ -14,6 +14,7 @@ final class ToDoListsViewController: UIViewController {
     @IBOutlet weak var completionSegment: UISegmentedControl!
     @IBOutlet weak var loadingActivityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var activityIndicatorView: UIView!
+    @IBOutlet weak var checkMark: UIButton!
     
     var todoListViewModel: ToDoListViewModelProtocol! {
         didSet {
@@ -35,7 +36,7 @@ final class ToDoListsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        todoListViewModel.load(with: segmentTitle())
+        todoListViewModel.load(with: getSegmentTitle())
     }
 }
 
@@ -44,24 +45,23 @@ extension ToDoListsViewController {
     @IBAction func segmentPressed(_ sender: UISegmentedControl)
     {
         selectedSegment = sender.titleForSegment(at: sender.selectedSegmentIndex)
-        todoListViewModel.load(with: segmentTitle())
+        todoListViewModel.load(with: getSegmentTitle())
     }
     
     @IBAction func refreshButtonPressed(_ sender: UIBarButtonItem)
     {
-        todoListViewModel.load(with: segmentTitle())
+        todoListViewModel.load(with: getSegmentTitle())
     }
-
+    
     @IBAction func addListPressed(_ sender: UIBarButtonItem)
     {
-
         todoListViewModel.selectAddButton()
     }
 }
 
 // MARK: - Get Segment Title
 extension ToDoListsViewController {
-    private func segmentTitle() -> SelectSegmentTitle {
+    private func getSegmentTitle() -> SelectSegmentTitle {
         guard let segmentTitle = selectedSegment else { return .notCompleted }
         let title = SelectSegmentTitle.getTitle(with: segmentTitle)
         
@@ -72,13 +72,13 @@ extension ToDoListsViewController {
 // MARK: - View Controller's Configurators
 extension ToDoListsViewController {
     
-   private func configureTableView()
-   {
+    private func configureTableView()
+    {
         tableView.dataSource = self
         tableView.delegate = self
         
         tableView.register(UINib(nibName: Constant.TableView.listsNibName,
-                             bundle: nil), forCellReuseIdentifier: Constant.TableView.listsCell)
+                                 bundle: nil), forCellReuseIdentifier: Constant.TableView.listsCell)
     }
     
     private func configureUIElement()
@@ -91,6 +91,8 @@ extension ToDoListsViewController {
     {
         if (isLoading) {
             activityIndicatorView.isHidden = false
+            loadingActivityIndicator.isHidden = false
+            checkMark.isHidden = true
             loadingActivityIndicator.startAnimating()
         } else {
             activityIndicatorView.isHidden = true
@@ -115,12 +117,29 @@ extension ToDoListsViewController: ToDoListViewModelDelegate {
         case .setLoading(let isLoading):
             configureLoadingIndicator(with: isLoading)
         case .showToDoLists(let lists):
+            todoLists = []
             todoLists = lists
             tableView.reloadData()
-        case .successDelete(let success):
-            print(success) // to do: show checkmark.
+        case .successUpdate(let isCompleted):
+            configureCheckMark(with: isCompleted)
+        case .successDelete(let isDeleted):
+            configureCheckMark(with: isDeleted) // to do: show checkmark.
         case .showError(let error):
             print(error) // todo: show error message.
+        }
+    }
+    
+    func configureCheckMark(with isDone: Bool)
+    {
+        print("..")
+        if (isDone) {
+            activityIndicatorView.isHidden = false
+            checkMark.isHidden = false
+            loadingActivityIndicator.isHidden = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { self.activityIndicatorView.isHidden = true }
+        } else {
+            checkMark.isHidden = true
+            activityIndicatorView.isHidden = false
         }
     }
 }
@@ -156,32 +175,42 @@ extension ToDoListsViewController: UITableViewDelegate {
             guard let self = self else { return }
             
             let selectedList = self.todoLists[indexPath.row].id
-            let selectedSegment = self.segmentTitle()
-            self.alertForDeleteList(id: selectedList, segmenTitle: selectedSegment)
+            let selectedSegment = self.getSegmentTitle()
+            self.alertToDeleteList(id: selectedList, segmenTitle: selectedSegment)
         }
         
         let complete = UIContextualAction(style: .normal,
                                           title: "Complete") { [weak self] _, _, _ in
             guard let self = self else { return }
-            print("complete: \(self.todoLists[indexPath.row].title)")
+            
+            let selectedList = self.todoLists[indexPath.row]
+            self.todoListViewModel.updateList(with: selectedList.id,
+                                              title: selectedList.title,
+                                              content: selectedList.content,
+                                              isCompleted: true)
         }
         
         return UISwipeActionsConfiguration(actions: [delete, complete])
     }
 }
 
+// MARK: - Create Alert For Deletion
 extension ToDoListsViewController {
-    private func alertForDeleteList(id: UUID,
+    private func alertToDeleteList(id: UUID,
                                     segmenTitle: SelectSegmentTitle)
     {
-        let alert = UIAlertController(title: "Delete List",
-                                      message: "Are u sure??",
-                                      preferredStyle: .alert)
+        let alert = UIAlertController(
+            title: "Delete List",
+            message: "Are u sure??",
+            preferredStyle: .alert
+        )
+        
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { (_) in
+        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { [weak self] (_) in
+            guard let self = self else { return }
             self.todoListViewModel.delete(with: id, segmenTitle)
         }))
         
-        self.present(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
     }
 }

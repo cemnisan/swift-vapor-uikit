@@ -12,11 +12,9 @@ struct CreateList: Migration {
         database.schema("lists")
             .id()
             .field("title",
-                   .string,
-                   .required)
+                   .string)
             .field("content",
-                   .string,
-                   .required)
+                   .string)
             .field("isCompleted",
                    .bool)
             .create()

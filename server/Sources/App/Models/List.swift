@@ -25,17 +25,27 @@ final class List: Model {
     @OptionalField(key: "isCompleted")
     var isCompleted: Bool?
 
+    @Timestamp(key: "created_at", on: .create)
+    var createdAt: Date?
+    
+    @Timestamp(key: "updated_at", on: .update)
+    var updatedAt: Date?
+    
     init() { }
     
     init(id: UUID? = nil,
          title: String,
          content: String,
-         isCompleted: Bool = false
+         isCompleted: Bool = false,
+         createdAt: Date?,
+         updatedAt: Date?
     ) {
         self.id = id
         self.title = title
         self.content = content
         self.isCompleted = isCompleted
+        self.createdAt = createdAt
+        self.updatedAt = updatedAt
     }
 }
 

@@ -12,14 +12,19 @@ protocol ToDoListViewModelProtocol {
     var delegate: ToDoListViewModelDelegate? { get set }
     func load(with segmenTitle: SelectSegmentTitle)
     func delete(with id: UUID, _ segmentTitle: SelectSegmentTitle)
+    func updateList(with id: UUID,
+                    title: String,
+                    content: String,
+                    isCompleted: Bool)
     func selectAddButton()
 }
 
 enum ToDoListViewModelOutput {
     case setLoading(Bool)
     case showToDoLists([ToDoListPresentation])
-    case showError(Error)
     case successDelete(Bool)
+    case successUpdate(Bool)
+    case showError(Error)
 }
 
 enum ToDoListViewRoute {

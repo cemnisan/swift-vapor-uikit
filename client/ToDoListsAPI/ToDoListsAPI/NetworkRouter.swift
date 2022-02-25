@@ -11,7 +11,10 @@ import Alamofire
 public enum NetworkRouter: URLRequestConvertible {
     case allLists
     case deleteList(id: UUID)
-    case updateList(id: UUID)
+    case updateList(id: UUID,
+                    _ title: String,
+                    _ content: String,
+                    _ isCompleted: Bool)
     case addList(_ title: String,
                  _ content: String,
                  isCompleted: Bool = false)
@@ -35,7 +38,7 @@ public enum NetworkRouter: URLRequestConvertible {
             return "/list"
         case .addList:
             return "/list"
-        case .updateList(let id):
+        case .updateList(let id, _, _, _):
             return "/list/\(id)"
         case .deleteList(let id):
             return "/list/\(id)"
@@ -44,9 +47,18 @@ public enum NetworkRouter: URLRequestConvertible {
     
     var parameters: Parameters? {
         switch self {
-        case .allLists, .deleteList, .updateList:
+        case .allLists, .deleteList:
             return nil
         case .addList(let title, let content, let isCompleted):
+            return [
+                "title": title,
+                "content": content,
+                "isCompleted": isCompleted
+            ]
+        case .updateList(_,
+                         let title,
+                         let content,
+                         let isCompleted):
             return [
                 "title": title,
                 "content": content,

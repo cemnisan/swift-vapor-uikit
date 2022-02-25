@@ -10,7 +10,7 @@ import UIKit
 import ToDoListsAPI
 
 final class ToDoListViewModel: ToDoListViewModelProtocol {
-    
+
     weak var delegate: ToDoListViewModelDelegate?
     private let service: IToDoListService
     private var todoLists: [List] = []
@@ -60,6 +60,38 @@ extension ToDoListViewModel {
                     let newList = self.filterData(with: self.todoLists, segmentTitle)
                     self.notify(.showToDoLists(newList))
                     self.notify(.successDelete(isDeleted))
+                case .failure(let error):
+                    self.notify(.showError(error))
+                }
+            }
+        }
+    }
+    
+    func updateList(with id: UUID,
+                    title: String,
+                    content: String,
+                    isCompleted: Bool)
+    {
+        notify(.setLoading(true))
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.service.updateList(with: id,
+                               title: title,
+                               content: content,
+                               isCompleted: isCompleted) { [weak self] (result) in
+                guard let self = self else { return }
+                self.notify(.setLoading(false))
+                
+                switch result {
+                case .success(let updatedList):
+                    for index in self.todoLists.indices {
+                        if self.todoLists[index].id == id {
+                            self.todoLists[index] = updatedList.result
+                        }
+                    }
+                    let updateList = self.filterData(with: self.todoLists, .notCompleted)
+                    self.notify(.showToDoLists(updateList))
+                    self.notify(.successUpdate(true))
                 case .failure(let error):
                     self.notify(.showError(error))
                 }

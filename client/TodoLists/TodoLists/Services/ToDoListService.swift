@@ -51,4 +51,24 @@ struct ToDoListService: IToDoListService {
             }
         }
     }
+    
+    func updateList(with id: UUID,
+                    title: String,
+                    content: String,
+                    isCompleted: Bool,
+                    completion: @escaping (Result<ListResponse<List>>) -> Void)
+    {
+        NetworkManager.shared.request(request: .updateList(id: id,
+                                                           title,
+                                                           content,
+                                                           isCompleted),
+                                      responseModel: ListResponse<List>.self) { (result) in
+            switch result {
+            case .success(let updatedList):
+                completion(.success(updatedList))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
 }

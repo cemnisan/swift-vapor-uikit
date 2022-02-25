@@ -62,13 +62,13 @@
                                 <rect key="frame" x="147" y="388" width="120" height="120"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oNc-XO-fUJ">
-                                        <rect key="frame" x="25" y="24" width="70" height="71.5"/>
+                                        <rect key="frame" x="25" y="25.5" width="70" height="69"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="70" id="9pi-Ha-cJg"/>
                                             <constraint firstAttribute="height" constant="70" id="ijc-pX-Fjc"/>
                                         </constraints>
                                         <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                        <state key="normal" backgroundImage="checkmark.seal" catalog="system"/>
+                                        <state key="normal" backgroundImage="checkmark.circle" catalog="system"/>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="0.64593750000000005" colorSpace="custom" customColorSpace="sRGB"/>
@@ -139,7 +139,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="checkmark.seal" catalog="system" width="128" height="128"/>
+        <image name="checkmark.circle" catalog="system" width="128" height="121"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

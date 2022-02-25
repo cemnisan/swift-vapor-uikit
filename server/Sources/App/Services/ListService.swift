@@ -34,6 +34,7 @@ struct ListService: IListService {
             .flatMap { list in
                 list.title = decodedList.title
                 list.content = decodedList.content
+                list.isCompleted = decodedList.isCompleted
                 
                 return list.save(on: db).map { list }
             }

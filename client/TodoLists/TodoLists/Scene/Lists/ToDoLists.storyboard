@@ -37,9 +37,20 @@
                                         <rect key="frame" x="50" y="50" width="20" height="20"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </activityIndicatorView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mFn-Fh-vdc">
+                                        <rect key="frame" x="30" y="30.5" width="60" height="59"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="60" id="apF-YW-4Rk"/>
+                                            <constraint firstAttribute="width" constant="60" id="zMG-zi-Z6z"/>
+                                        </constraints>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" backgroundImage="checkmark.circle" catalog="system"/>
+                                    </button>
                                 </subviews>
-                                <color key="backgroundColor" systemColor="systemGray2Color"/>
+                                <color key="backgroundColor" red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="0.65369791666666666" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
+                                    <constraint firstItem="mFn-Fh-vdc" firstAttribute="centerX" secondItem="uXz-ot-CwA" secondAttribute="centerX" id="3Ky-H7-SBF"/>
+                                    <constraint firstItem="mFn-Fh-vdc" firstAttribute="centerY" secondItem="uXz-ot-CwA" secondAttribute="centerY" id="amY-sJ-2q2"/>
                                     <constraint firstAttribute="height" constant="120" id="jpd-oY-k0S"/>
                                     <constraint firstAttribute="width" constant="120" id="qDJ-5h-xmq"/>
                                 </constraints>
@@ -82,6 +93,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="activityIndicatorView" destination="uXz-ot-CwA" id="x6Y-eP-YM9"/>
+                        <outlet property="checkMark" destination="mFn-Fh-vdc" id="A6P-fn-TmN"/>
                         <outlet property="completionSegment" destination="eLc-aU-vHz" id="eIx-79-6dZ"/>
                         <outlet property="loadingActivityIndicator" destination="FCk-ry-FKx" id="Med-bf-QbQ"/>
                         <outlet property="tableView" destination="Mwq-kG-oNB" id="3tO-7g-wzZ"/>
@@ -112,12 +124,10 @@
     </scenes>
     <resources>
         <image name="arrow.clockwise" catalog="system" width="115" height="128"/>
+        <image name="checkmark.circle" catalog="system" width="128" height="121"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemGray2Color">
-            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
