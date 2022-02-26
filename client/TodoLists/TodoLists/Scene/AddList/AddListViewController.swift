@@ -10,11 +10,11 @@ import UIKit
 final class AddListViewController: UIViewController
 {
     @IBOutlet weak var titleTextField: UITextField!
+    @IBOutlet weak var endDateTextField: UITextField!
+    @IBOutlet weak var contentTextField: UITextField!
     @IBOutlet weak var contentTextView: UITextView!
     @IBOutlet weak var checkMarkView: UIView!
     @IBOutlet weak var indicatorView: UIActivityIndicatorView!
-    @IBOutlet weak var endDateTextField: UITextField!
-    @IBOutlet weak var contentTextField: UITextField!
     
     var viewModel: AddListViewModelProtocol! {
         didSet {
@@ -37,9 +37,16 @@ extension AddListViewController
 {
     @IBAction func saveButtonPressed(_ sender: UIBarButtonItem)
     {
-        viewModel.add(with: titleTextField.text!,
-                      contentTextView.text!,
-                      datePicker.date.isoString)
+        do {
+            try viewModel.add(with: titleTextField.text!,
+                              content: contentTextView.text!,
+                              expectedDate: datePicker.date.isoString,
+                              selectedDate: endDateTextField.text!)
+        } catch {
+            AlertManager.shared.alertForError(on: self,
+                                                   title: "Error",
+                                                   message: error.localizedDescription)
+        }
     }
 
     @objc private func donePressed() {
@@ -54,12 +61,14 @@ extension AddListViewController: AddListViewModelDelegate
     func handleOutput(_ output: AddListViewModelOutput)
     {
         switch output {
-        case .showSuccessAdded(let isAdded):
-            configureCheckMark(with: isAdded)
         case .setLoading(let isLoading):
             configureIndicatorView(with: isLoading)
-        case .isEmpty:
-            print("error.")
+        case .showSuccessAdded(let isAdded):
+            configureCheckMark(with: isAdded)
+        case .showError(let error):
+            AlertManager.shared.alertForError(on: self,
+                                                   title: "Error",
+                                                   message: error.localizedDescription)
         }
     }
 }

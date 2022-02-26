@@ -137,7 +137,9 @@ extension ToDoListsViewController: ToDoListViewModelDelegate {
         case .successDelete(let isDeleted):
             configureCheckMark(with: isDeleted)
         case .showError(let error):
-            print(error) // todo: show error message.
+            AlertManager.shared.alertForError(on: self,
+                                              title: "Error",
+                                              message: error.localizedDescription)
         }
     }
 }
@@ -175,7 +177,9 @@ extension ToDoListsViewController: UITableViewDelegate {
                                         title: "🗑") { [weak self] _,_,_ in
             guard let self = self else { return }
             
-            self.alertToDeleteList(id: selectedList.id, segmenTitle: selectedSegment)
+            AlertManager.shared.alertForDeleteList(on: self) {
+                self.todoListViewModel.delete(with: selectedList.id, selectedSegment)
+            }
         }
         
         if selectedSegment == .notCompleted {
@@ -191,26 +195,5 @@ extension ToDoListsViewController: UITableViewDelegate {
             return UISwipeActionsConfiguration(actions: [delete, complete])
         }
         return UISwipeActionsConfiguration(actions: [delete])
-    }
-}
-
-// MARK: - Create Alert For Deletion
-extension ToDoListsViewController {
-    private func alertToDeleteList(id: UUID,
-                                   segmenTitle: SelectSegmentTitle)
-    {
-        let alert = UIAlertController(
-            title: "Delete List",
-            message: "Are u sure??",
-            preferredStyle: .alert
-        )
-        
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { [weak self] (_) in
-            guard let self = self else { return }
-            self.todoListViewModel.delete(with: id, segmenTitle)
-        }))
-        
-        present(alert, animated: true, completion: nil)
     }
 }

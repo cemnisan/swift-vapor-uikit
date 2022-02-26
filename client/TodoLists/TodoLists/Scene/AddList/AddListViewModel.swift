@@ -7,23 +7,32 @@
 
 import Foundation
 
-final class AddListViewModel: AddListViewModelProtocol {
+final class AddListViewModel: AddListViewModelProtocol
+{
     var delegate: AddListViewModelDelegate?
     private let service: IToDoListService
     
     init(service: IToDoListService) {
         self.service = service
     }
-    
+}
+
+extension AddListViewModel
+{
     func add(with title: String,
-             _ content: String,
-             _ endDate: String)
-    {
+             content: String,
+             expectedDate: String,
+             selectedDate: String) throws {
+  
+        if (title.isEmpty)   { throw EmptyError.isTitleEmpty }
+        if (content.isEmpty) { throw EmptyError.isContentEmpty }
+        if (selectedDate.isEmpty) { throw EmptyError.isDateEmpty }
+        
         notify(.setLoading(true))
         
         service.addList(with: title,
                         content,
-                        endDate) { [weak self] (result) in
+                        expectedDate) { [weak self] (result) in
             guard let self = self else { return }
             self.notify(.setLoading(false))
             
@@ -31,7 +40,7 @@ final class AddListViewModel: AddListViewModelProtocol {
             case .success(_):
                 self.notify(.showSuccessAdded(true))
             case .failure(let error):
-                print(error)
+                self.notify(.showError(error))
             }
         }
     }
