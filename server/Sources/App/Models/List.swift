@@ -30,6 +30,9 @@ final class List: Model {
     @Timestamp(key: "updated_at", on: .update, format: .iso8601)
     var updatedAt: Date?
     
+    @Field(key: "end_date")
+    var endDate: Date?
+    
     init() { }
     
     init(id: UUID? = nil,
@@ -37,7 +40,8 @@ final class List: Model {
          content: String,
          isCompleted: Bool = false,
          createdAt: Date?,
-         updatedAt: Date?
+         updatedAt: Date?,
+         endDate: Date?
     ) {
         self.id = id
         self.title = title
@@ -45,6 +49,7 @@ final class List: Model {
         self.isCompleted = isCompleted
         self.createdAt = createdAt
         self.updatedAt = updatedAt
+        self.endDate = endDate
     }
 }
 

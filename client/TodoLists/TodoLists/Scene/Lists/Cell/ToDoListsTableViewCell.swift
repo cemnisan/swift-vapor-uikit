@@ -12,9 +12,8 @@ final class ToDoListsTableViewCell: UITableViewCell {
     @IBOutlet weak var listNameLabel: UILabel!
     @IBOutlet weak var listDetailLabel: UILabel!
     @IBOutlet weak var listDateLabel: UILabel!
-    
-    private let date = Date()
-    
+    @IBOutlet weak var listEndDateLabel: UILabel!
+
     override func awakeFromNib() {
         super.awakeFromNib()
     }
@@ -24,11 +23,31 @@ final class ToDoListsTableViewCell: UITableViewCell {
     }
 }
 
-
+// MARK: - Configure Cell
 extension ToDoListsTableViewCell {
-    func configureCell(with todoList: ToDoListPresentation) {
+    func configureCell(with todoList: ToDoListPresentation,
+                       segmentTitle: SelectSegmentTitle)
+    {
         listNameLabel.text = todoList.title
         listDetailLabel.text = todoList.content
-        listDateLabel.text = date.dateFormatter(format: todoList.createdAt)
+        configureDate(on: segmentTitle,
+                        updatedDate: todoList.updatedAt,
+                        createdDate: todoList.createdAt,
+                        endDate: todoList.endDate)
+    }
+    
+    private func configureDate(on segment: SelectSegmentTitle,
+                                 updatedDate: Date,
+                                 createdDate: Date,
+                                 endDate: Date)
+    {
+        switch segment {
+        case .completed:
+            listDateLabel.text = DateFormatter.dateOnly.string(from: updatedDate)
+            listEndDateLabel.text = ""
+        case .notCompleted:
+            listDateLabel.text = DateFormatter.dateOnly.string(from: createdDate)
+            listEndDateLabel.text = DateFormatter.dateOnly.string(from: endDate)
+        }
     }
 }

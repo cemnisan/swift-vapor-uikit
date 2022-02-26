@@ -9,13 +9,13 @@ import Foundation
 
 protocol AddListViewModelProtocol {
     var delegate: AddListViewModelDelegate? { get set }
-    func add(with title: String, _ content: String)
+    func add(with title: String, _ content: String, _ endDate: String)
 }
 
 enum AddListViewModelOutput {
     case setLoading(Bool)
     case showSuccessAdded(Bool)
-    case isEmptyError
+    case isEmpty
 }
 
 protocol AddListViewModelDelegate {

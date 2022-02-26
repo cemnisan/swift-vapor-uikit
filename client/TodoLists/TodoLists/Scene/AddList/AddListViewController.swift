@@ -7,12 +7,14 @@
 
 import UIKit
 
-final class AddListViewController: UIViewController {
-    
+final class AddListViewController: UIViewController
+{
     @IBOutlet weak var titleTextField: UITextField!
-    @IBOutlet weak var contentTextField: UITextField!
+    @IBOutlet weak var contentTextView: UITextView!
     @IBOutlet weak var checkMarkView: UIView!
     @IBOutlet weak var indicatorView: UIActivityIndicatorView!
+    @IBOutlet weak var endDateTextField: UITextField!
+    @IBOutlet weak var contentTextField: UITextField!
     
     var viewModel: AddListViewModelProtocol! {
         didSet {
@@ -20,33 +22,64 @@ final class AddListViewController: UIViewController {
         }
     }
     
+    private let datePicker = UIDatePicker()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-       
+
         configureUI()
-    }
-    
-    @IBAction func saveButtonPressed(_ sender: UIButton) {
-        viewModel.add(with: titleTextField.text!, contentTextField.text!)
+        configureDatePicker()
     }
 }
 
-extension AddListViewController: AddListViewModelDelegate {
-    func handleOutput(_ output: AddListViewModelOutput) {
+//MARK: - Button Pressed
+extension AddListViewController
+{
+    @IBAction func saveButtonPressed(_ sender: UIBarButtonItem)
+    {
+        viewModel.add(with: titleTextField.text!,
+                      contentTextView.text!,
+                      datePicker.date.isoString)
+    }
+
+    @objc private func donePressed() {
+        endDateTextField.text = "\(DateFormatter.dateOnly.string(from: datePicker.date))"
+        self.view.endEditing(true)
+    }
+}
+
+// MARK: - View Model Delegate
+extension AddListViewController: AddListViewModelDelegate
+{
+    func handleOutput(_ output: AddListViewModelOutput)
+    {
         switch output {
         case .showSuccessAdded(let isAdded):
             configureCheckMark(with: isAdded)
         case .setLoading(let isLoading):
             configureIndicatorView(with: isLoading)
-        case .isEmptyError:
+        case .isEmpty:
             print("error.")
         }
     }
 }
 
 // MARK: - Configure UI
-extension AddListViewController {
-    private func configureIndicatorView(with isLoading: Bool) {
+extension AddListViewController
+{
+    private func configureUI()
+    {
+        contentTextField.isEnabled = false
+        contentTextField.backgroundColor = .white
+        
+        indicatorView.isHidden = true
+        checkMarkView.isHidden = true
+        
+        checkMarkView.layer.cornerRadius = 6
+    }
+    
+    private func configureIndicatorView(with isLoading: Bool)
+    {
         if (isLoading) {
             indicatorView.isHidden = false
             indicatorView.startAnimating()
@@ -55,7 +88,8 @@ extension AddListViewController {
         }
     }
     
-    private func configureCheckMark(with isAdded: Bool) {
+    private func configureCheckMark(with isAdded: Bool)
+    {
         if (isAdded) {
             checkMarkView.isHidden = false
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
@@ -64,10 +98,22 @@ extension AddListViewController {
         }
     }
     
-    private func configureUI() {
-        indicatorView.isHidden = true
-        checkMarkView.isHidden = true
+    private func configureDatePicker()
+    {
+        // create toolbar
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
         
-        checkMarkView.layer.cornerRadius = 6
+        // create bar button
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(donePressed))
+        toolbar.setItems([doneButton], animated: true)
+        
+        // assign toolbar
+        endDateTextField.inputAccessoryView = toolbar
+        datePicker.datePickerMode = .date
+        datePicker.preferredDatePickerStyle = .wheels
+        
+        // assign date picker to the text field
+        endDateTextField.inputView = datePicker
     }
 }

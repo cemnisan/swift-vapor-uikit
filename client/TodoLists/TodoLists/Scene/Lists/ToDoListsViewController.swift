@@ -157,7 +157,7 @@ extension ToDoListsViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constant.TableView.listsCell,
                                                  for: indexPath) as! ToDoListsTableViewCell
         let todoList = todoLists[indexPath.row]
-        cell.configureCell(with: todoList)
+        cell.configureCell(with: todoList, segmentTitle: getSegmentTitle())
         
         return cell
     }
@@ -168,27 +168,29 @@ extension ToDoListsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView,
                    trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration?
     {
+        let selectedList = self.todoLists[indexPath.row]
+        let selectedSegment = self.getSegmentTitle()
+        
         let delete = UIContextualAction(style: .destructive,
-                                        title: "Delete") { [weak self] _,_,_ in
+                                        title: "🗑") { [weak self] _,_,_ in
             guard let self = self else { return }
             
-            let selectedList = self.todoLists[indexPath.row].id
-            let selectedSegment = self.getSegmentTitle()
-            self.alertToDeleteList(id: selectedList, segmenTitle: selectedSegment)
+            self.alertToDeleteList(id: selectedList.id, segmenTitle: selectedSegment)
         }
         
-        let complete = UIContextualAction(style: .normal,
-                                          title: "Complete") { [weak self] _, _, _ in
-            guard let self = self else { return }
-            
-            let selectedList = self.todoLists[indexPath.row]
-            self.todoListViewModel.updateList(with: selectedList.id,
-                                              title: selectedList.title,
-                                              content: selectedList.content,
-                                              isCompleted: true)
+        if selectedSegment == .notCompleted {
+            let complete = UIContextualAction(style: .normal,
+                                              title: "💯") { [weak self] _, _, _ in
+                guard let self = self else { return }
+                
+                self.todoListViewModel.updateList(with: selectedList.id,
+                                                  title: selectedList.title,
+                                                  content: selectedList.content,
+                                                  isCompleted: true)
+            }
+            return UISwipeActionsConfiguration(actions: [delete, complete])
         }
-        
-        return UISwipeActionsConfiguration(actions: [delete, complete])
+        return UISwipeActionsConfiguration(actions: [delete])
     }
 }
 

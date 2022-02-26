@@ -13,8 +13,9 @@ final class ToDoListPresentation: NSObject {
     let title: String
     let content: String
     let isCompleted: Bool
-    let createdAt: String
-    let updatedAt: String
+    let createdAt: Date
+    let updatedAt: Date
+    let endDate: Date
     
     init(
         list: List
@@ -25,6 +26,8 @@ final class ToDoListPresentation: NSObject {
         self.isCompleted = list.isCompleted
         self.createdAt = list.createdAt
         self.updatedAt = list.updatedAt
+        self.endDate = list.endDate
+        
         
         super.init()
     }

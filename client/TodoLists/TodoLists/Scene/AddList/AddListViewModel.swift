@@ -15,10 +15,15 @@ final class AddListViewModel: AddListViewModelProtocol {
         self.service = service
     }
     
-    func add(with title: String, _ content: String) {
+    func add(with title: String,
+             _ content: String,
+             _ endDate: String)
+    {
         notify(.setLoading(true))
         
-        service.addList(with: title, content) { [weak self] (result) in
+        service.addList(with: title,
+                        content,
+                        endDate) { [weak self] (result) in
             guard let self = self else { return }
             self.notify(.setLoading(false))
             

@@ -17,7 +17,8 @@ public enum NetworkRouter: URLRequestConvertible {
                     _ isCompleted: Bool)
     case addList(_ title: String,
                  _ content: String,
-                 isCompleted: Bool = false)
+                 isCompleted: Bool = false,
+                 endDate: String)
     
     private var method: HTTPMethod {
         switch self {
@@ -49,11 +50,15 @@ public enum NetworkRouter: URLRequestConvertible {
         switch self {
         case .allLists, .deleteList:
             return nil
-        case .addList(let title, let content, let isCompleted):
+        case .addList(let title,
+                      let content,
+                      let isCompleted,
+                      let endDate):
             return [
                 "title": title,
                 "content": content,
-                "isCompleted": isCompleted
+                "isCompleted": isCompleted,
+                "endDate": endDate
             ]
         case .updateList(_,
                          let title,

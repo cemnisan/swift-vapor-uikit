@@ -13,6 +13,7 @@ protocol IToDoListService {
     
     func addList(with title: String,
                  _ content: String,
+                 _ endDate: String,
                  completion: @escaping (Result<ListResponse<List>>) -> Void)
     
     func deleteList(with id: UUID,

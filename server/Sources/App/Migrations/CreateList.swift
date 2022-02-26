@@ -17,6 +17,8 @@ struct CreateList: Migration {
                    .string)
             .field("isCompleted",
                    .bool)
+            .field("endDate",
+                   .date)
             .create()
     }
     

@@ -8,11 +8,10 @@
 import Foundation
 
 extension Date {
-    func dateFormatter(format: String) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .medium
-        dateFormatter.timeStyle = .none
-        dateFormatter.locale = Locale.current
-        return dateFormatter.string(from: self)
+    var isoString: String {
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+        guard let data = try? encoder.encode(self), let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) else { return "" }
+        return json as! String
     }
 }

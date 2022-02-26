@@ -25,14 +25,16 @@ struct ToDoListService: IToDoListService {
     
     func addList(with title: String,
                  _ content: String,
+                 _ endDate: String,
                  completion: @escaping (Result<ListResponse<List>>) -> Void)
+    
     {
         NetworkManager.shared.request(request: .addList(title,
-                                                        content),
+                                                        content,
+                                                        endDate: endDate),
                                       responseModel: ListResponse<List>.self) { (result) in
             switch result {
             case .success(let newList):
-                print(newList)
                 completion(.success(newList))
             case .failure(let error):
                 completion(.failure(error))
