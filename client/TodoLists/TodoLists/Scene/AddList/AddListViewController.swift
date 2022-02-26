@@ -37,16 +37,15 @@ extension AddListViewController
 {
     @IBAction func saveButtonPressed(_ sender: UIBarButtonItem)
     {
-        do {
-            try viewModel.add(with: titleTextField.text!,
-                              content: contentTextView.text!,
-                              expectedDate: datePicker.date.isoString,
-                              selectedDate: endDateTextField.text!)
-        } catch {
-            AlertManager.shared.alertForError(on: self,
-                                                   title: "Error",
-                                                   message: error.localizedDescription)
-        }
+        let title = titleTextField.text!
+        let content = contentTextView.text!
+        let expectedDate = endDateTextField.text!
+        let selectedDate = datePicker.date.isoString
+        
+        viewModel.add(with: title,
+                      content: content,
+                      expectedDate: expectedDate,
+                      selectedDate: selectedDate)
     }
 
     @objc private func donePressed() {

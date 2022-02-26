@@ -7,8 +7,11 @@
 
 import Foundation
 
-enum EmptyError: Error {
+enum ValidateError: Error {
     case isTitleEmpty
+    case isTitleTooShort
+    case isTitleTooLong
     case isContentEmpty
+    case isContentTooShort
     case isDateEmpty
 }

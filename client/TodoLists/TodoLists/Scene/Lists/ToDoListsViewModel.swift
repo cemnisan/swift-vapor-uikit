@@ -9,8 +9,8 @@ import Foundation
 import UIKit
 import ToDoListsAPI
 
-final class ToDoListViewModel: ToDoListViewModelProtocol {
-
+final class ToDoListViewModel: ToDoListViewModelProtocol
+{
     weak var delegate: ToDoListViewModelDelegate?
     private let service: IToDoListService
     private var todoLists: [List] = []
@@ -20,8 +20,9 @@ final class ToDoListViewModel: ToDoListViewModelProtocol {
     }
 }
 
-extension ToDoListViewModel {
-    
+// MARK: - View Model Protocol
+extension ToDoListViewModel
+{
     func load(with segmenTitle: SelectSegmentTitle)
     {
         notify(.setLoading(true))
@@ -44,8 +45,10 @@ extension ToDoListViewModel {
         }
     }
     
-    func delete(with id: UUID, _ segmentTitle: SelectSegmentTitle)
-    {
+    func delete(
+        with id: UUID,
+        _ segmentTitle: SelectSegmentTitle
+    ) {
         notify(.setLoading(true))
         
         service.deleteList(with: id) { [weak self] (results) in
@@ -67,18 +70,21 @@ extension ToDoListViewModel {
         }
     }
     
-    func updateList(with id: UUID,
-                    title: String,
-                    content: String,
-                    isCompleted: Bool)
-    {
+    func updateList(
+        with id: UUID,
+        title: String,
+        content: String,
+        isCompleted: Bool
+    ) {
         notify(.setLoading(true))
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            
             self.service.updateList(with: id,
                                title: title,
                                content: content,
                                isCompleted: isCompleted) { [weak self] (result) in
+                
                 guard let self = self else { return }
                 self.notify(.setLoading(false))
                 
@@ -89,8 +95,9 @@ extension ToDoListViewModel {
                             self.todoLists[index] = updatedList.result
                         }
                     }
-                    let updateList = self.filterData(with: self.todoLists, .notCompleted)
-                    self.notify(.showToDoLists(updateList))
+                    let updatedList = self.filterData(with: self.todoLists, .notCompleted)
+                    
+                    self.notify(.showToDoLists(updatedList))
                     self.notify(.successUpdate(true))
                 case .failure(let error):
                     self.notify(.showError(error))
@@ -107,8 +114,9 @@ extension ToDoListViewModel {
 
 }
 
-extension ToDoListViewModel {
-    
+// MARK: - Filter Data
+extension ToDoListViewModel
+{
     private func filterData(with list: [List],
                             _ segmenTitle: SelectSegmentTitle) -> [ToDoListPresentation]
     {
@@ -128,5 +136,4 @@ extension ToDoListViewModel {
     {
         delegate?.handleToDoListViewModelOutput(output)
     }
- 
 }

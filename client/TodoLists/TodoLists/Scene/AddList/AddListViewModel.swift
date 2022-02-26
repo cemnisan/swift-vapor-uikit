@@ -17,35 +17,69 @@ final class AddListViewModel: AddListViewModelProtocol
     }
 }
 
+// MARK: - View Model Protocol
 extension AddListViewModel
 {
     func add(with title: String,
              content: String,
              expectedDate: String,
-             selectedDate: String) throws {
-  
-        if (title.isEmpty)   { throw EmptyError.isTitleEmpty }
-        if (content.isEmpty) { throw EmptyError.isContentEmpty }
-        if (selectedDate.isEmpty) { throw EmptyError.isDateEmpty }
-        
-        notify(.setLoading(true))
-        
-        service.addList(with: title,
-                        content,
-                        expectedDate) { [weak self] (result) in
-            guard let self = self else { return }
-            self.notify(.setLoading(false))
+             selectedDate: String)
+    {
+        do {
+            try validate(with: title, content, expectedDate)
             
-            switch result {
-            case .success(_):
-                self.notify(.showSuccessAdded(true))
-            case .failure(let error):
-                self.notify(.showError(error))
+            notify(.setLoading(true))
+            
+            service.addList(with: title,
+                            content,
+                            selectedDate) { [weak self] (result) in
+                guard let self = self else { return }
+                self.notify(.setLoading(false))
+                
+                switch result {
+                case .success(_):
+                    self.notify(.showSuccessAdded(true))
+                case .failure(let networkError):
+                    self.notify(.showError(networkError))
+                }
             }
+        } catch let validateError {
+            notify(.showError(validateError))
         }
     }
     
     func notify(_ output: AddListViewModelOutput) {
         delegate?.handleOutput(output)
+    }
+}
+
+// MARK: - Validate
+extension AddListViewModel {
+    private func validate(with title:String,
+                          _ content: String,
+                          _ expectedDate: String) throws {
+        guard !title.isEmpty else {
+            throw ValidateError.isTitleEmpty
+        }
+        
+        guard title.count >= 3 else {
+            throw ValidateError.isTitleTooShort
+        }
+        
+        guard title.count < 15 else {
+            throw ValidateError.isTitleTooLong
+        }
+    
+        guard !content.isEmpty else {
+            throw ValidateError.isContentEmpty
+        }
+        
+        guard content.count > 3 else {
+            throw ValidateError.isContentTooShort
+        }
+
+        guard !expectedDate.isEmpty else {
+            throw ValidateError.isDateEmpty
+        }
     }
 }

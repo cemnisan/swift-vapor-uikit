@@ -12,7 +12,7 @@ protocol AddListViewModelProtocol {
     func add(with title: String,
              content: String,
              expectedDate: String,
-             selectedDate: String) throws
+             selectedDate: String) 
 }
 
 enum AddListViewModelOutput {
