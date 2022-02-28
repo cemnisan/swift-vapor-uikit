@@ -54,7 +54,8 @@ extension AddListViewModel
 }
 
 // MARK: - Validate
-extension AddListViewModel {
+extension AddListViewModel
+{
     private func validate(with title:String,
                           _ content: String,
                           _ expectedDate: String) throws {
@@ -64,10 +65,6 @@ extension AddListViewModel {
         
         guard title.count >= 3 else {
             throw ValidateError.isTitleTooShort
-        }
-        
-        guard title.count < 15 else {
-            throw ValidateError.isTitleTooLong
         }
     
         guard !content.isEmpty else {

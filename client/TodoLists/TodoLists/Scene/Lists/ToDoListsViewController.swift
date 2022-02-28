@@ -10,17 +10,24 @@ import ToDoListsAPI
 
 final class ToDoListsViewController: UIViewController {
     
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var completionSegment: UISegmentedControl!
-    @IBOutlet weak var loadingActivityIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var activityIndicatorView: UIView!
-    @IBOutlet weak var checkMark: UIButton!
+    @IBOutlet private weak var tableView: UITableView!
+    @IBOutlet private weak var completionSegment: UISegmentedControl!
+    @IBOutlet private weak var loadingActivityIndicator: UIActivityIndicatorView!
+    @IBOutlet private weak var activityIndicatorView: UIView!
+    @IBOutlet private weak var checkMark: UIButton!
     
     var todoListViewModel: ToDoListViewModelProtocol! {
         didSet {
             todoListViewModel.delegate = self
         }
     }
+    
+    private lazy var alertHelper = AlertHelper()
+    private lazy var isListEmpty: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 17)
+        return label
+    }()
     
     private var todoLists: [ToDoListPresentation] = []
     private var selectedSegment: String?
@@ -33,9 +40,9 @@ final class ToDoListsViewController: UIViewController {
         configureTableView()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool)
+    {
         super.viewWillAppear(animated)
-        
         todoListViewModel.load(with: getSegmentTitle())
     }
 }
@@ -60,7 +67,8 @@ extension ToDoListsViewController {
 }
 
 // MARK: - Get Segment Title
-extension ToDoListsViewController {
+extension ToDoListsViewController
+{
     private func getSegmentTitle() -> SelectSegmentTitle {
         guard let segmentTitle = selectedSegment else { return .notCompleted }
         let title = SelectSegmentTitle.getTitle(with: segmentTitle)
@@ -70,10 +78,11 @@ extension ToDoListsViewController {
 }
 
 // MARK: - View Controller's Configurators
-extension ToDoListsViewController {
-    
+extension ToDoListsViewController
+{
     private func configureTableView()
     {
+        tableView.separatorStyle = .none
         tableView.dataSource = self
         tableView.delegate = self
         
@@ -83,15 +92,34 @@ extension ToDoListsViewController {
     
     private func configureUIElement()
     {
+        view.addSubview(isListEmpty)
+        isListEmpty.translatesAutoresizingMaskIntoConstraints = false
+        isListEmpty.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        isListEmpty.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        
         activityIndicatorView.isHidden = false
+        activityIndicatorView.backgroundColor = #colorLiteral(red: 0.5568627451, green: 0.5568627451, blue: 0.5764705882, alpha: 0.90140625)
         activityIndicatorView.layer.cornerRadius = 6
     }
     
+    private func configureUIElement(with listCount: Int)
+    {
+        if listCount == 0 {
+            tableView.separatorStyle = .none
+            isListEmpty.text = "Burada henüz bir seyler yok..."
+        } else {
+            tableView.separatorStyle = .singleLine
+            isListEmpty.text = ""
+        }
+    }
+
     private func configureLoadingIndicator(with isLoading: Bool)
     {
         if (isLoading) {
+            isListEmpty.text = ""
             activityIndicatorView.isHidden = false
             loadingActivityIndicator.isHidden = false
+            loadingActivityIndicator.color = .white
             checkMark.isHidden = true
             loadingActivityIndicator.startAnimating()
         } else {
@@ -115,9 +143,10 @@ extension ToDoListsViewController {
 }
 
 // MARK: - View Model's Delegate
-extension ToDoListsViewController: ToDoListViewModelDelegate {
-    
-    func navigate(to route: ToDoListViewRoute) {
+extension ToDoListsViewController: ToDoListViewModelDelegate
+{
+    func navigate(to route: ToDoListViewRoute)
+    {
         switch route {
         case .add(let viewModel):
             let viewController = AddListBuilder.make(with: viewModel)
@@ -125,19 +154,21 @@ extension ToDoListsViewController: ToDoListViewModelDelegate {
         }
     }
     
-    func handleToDoListViewModelOutput(_ output: ToDoListViewModelOutput) {
+    func handleToDoListViewModelOutput(_ output: ToDoListViewModelOutput)
+    {
         switch output {
         case .setLoading(let isLoading):
             configureLoadingIndicator(with: isLoading)
         case .showToDoLists(let lists):
             todoLists = lists
             tableView.reloadData()
+            configureUIElement(with: todoLists.count)
         case .successUpdate(let isCompleted):
             configureCheckMark(with: isCompleted)
         case .successDelete(let isDeleted):
             configureCheckMark(with: isDeleted)
         case .showError(let error):
-            AlertManager.shared.alertForError(on: self,
+            alertHelper.alertForUserErrors(on: self,
                                               title: "Error",
                                               message: error.localizedDescription)
         }
@@ -145,8 +176,8 @@ extension ToDoListsViewController: ToDoListViewModelDelegate {
 }
 
 // MARK: - Table View's Data Source
-extension ToDoListsViewController: UITableViewDataSource {
-    
+extension ToDoListsViewController: UITableViewDataSource
+{
     func tableView(_ tableView: UITableView,
                    numberOfRowsInSection section: Int) -> Int
     {
@@ -166,7 +197,8 @@ extension ToDoListsViewController: UITableViewDataSource {
 }
 
 // MARK: - Table View's Delegate
-extension ToDoListsViewController: UITableViewDelegate {
+extension ToDoListsViewController: UITableViewDelegate
+{
     func tableView(_ tableView: UITableView,
                    trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration?
     {
@@ -177,7 +209,7 @@ extension ToDoListsViewController: UITableViewDelegate {
                                         title: "🗑") { [weak self] _,_,_ in
             guard let self = self else { return }
             
-            AlertManager.shared.alertForDeleteList(on: self) {
+            self.alertHelper.alertForDeleteList(on: self) {
                 self.todoListViewModel.delete(with: selectedList.id, selectedSegment)
             }
         }

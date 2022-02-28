@@ -32,12 +32,12 @@
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aRZ-Pf-4At">
                         <rect key="frame" x="16" y="50" width="238" height="78"/>
                         <string key="text">sdfıjsdfoıjdsfoıjwefoıejwofıjweoıjfasdfıjsdfoıjdsfoıjwefoıejwofıjweoıjfasdfıjsdfoıjdsfoıjwefoıejwofıjweoıjfasdfıjsdfoıjdsfoıjwefoıejwofıjweoıjfasdfıjsdfoıjdsfoıjwefoıejwofıjweoıjfa</string>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="highlightedColor" systemColor="systemGrayColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Feb 14, 2022" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bbJ-uV-gpo">
-                        <rect key="frame" x="180" y="27" width="74" height="14.5"/>
+                        <rect key="frame" x="180" y="27.5" width="74" height="14.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <color key="textColor" systemColor="systemRedColor"/>
                         <nil key="highlightedColor"/>

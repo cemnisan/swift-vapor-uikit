@@ -23,6 +23,7 @@ final class AddListViewController: UIViewController
     }
     
     private let datePicker = UIDatePicker()
+    private lazy var alertHelper = AlertHelper()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,7 +66,7 @@ extension AddListViewController: AddListViewModelDelegate
         case .showSuccessAdded(let isAdded):
             configureCheckMark(with: isAdded)
         case .showError(let error):
-            AlertManager.shared.alertForError(on: self,
+            alertHelper.alertForUserErrors(on: self,
                                                    title: "Error",
                                                    message: error.localizedDescription)
         }

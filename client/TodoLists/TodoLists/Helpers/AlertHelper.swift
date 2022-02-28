@@ -8,17 +8,11 @@
 import Foundation
 import UIKit
 
-final class AlertManager {
-    static let shared = AlertManager()
-    
-    private init() {}
-}
-
-extension AlertManager
+final class AlertHelper
 {
     func alertForDeleteList(
         on vc: UIViewController,
-        delete: @escaping () -> Void
+        deleteList: @escaping () -> Void
     ) {
         let alert = UIAlertController(
             title: "Delete List",
@@ -26,12 +20,12 @@ extension AlertManager
             preferredStyle: .alert
         )
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { _ in delete() }))
+        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { _ in deleteList() }))
         
         vc.present(alert, animated: true, completion: nil)
     }
     
-    func alertForError(
+    func alertForUserErrors(
         on vc: UIViewController,
         title: String,
         message: String

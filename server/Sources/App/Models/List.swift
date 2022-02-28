@@ -8,8 +8,8 @@
 import Vapor
 import Fluent
 
-final class List: Model {
-    
+final class List: Model
+{
     static let schema = "lists"
     
     @ID(key: .id)
@@ -52,6 +52,5 @@ final class List: Model {
         self.endDate = endDate
     }
 }
-
 
 extension List: Content { }
