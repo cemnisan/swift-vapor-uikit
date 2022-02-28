@@ -7,8 +7,8 @@
 
 import Vapor
 
-
-final class ListController {
+final class ListController
+{
     var service: IListService
     
     init(service: IListService) {
@@ -16,21 +16,23 @@ final class ListController {
     }
 }
 
-extension ListController {
-    
-    func getAllLists(_ req: Request) throws -> EventLoopFuture<ListResponse<[List]>> {
+extension ListController
+{
+    func getLists(_ req: Request) throws -> EventLoopFuture<ListResponse<[List]>>
+    {
         let allLists = try service.get(from: req.db)
         
-        // return JSON.
         return allLists.map { lists in
             ListResponse<[List]>(result: lists, statusCode: .ok)
         }
     }
     
-    func getListById(_ req: Request) throws -> EventLoopFuture<ListResponse<List>> {
+    func getListById(_ req: Request) throws -> EventLoopFuture<ListResponse<List>>
+    {
         guard let listID = req.parameters.get("id", as: UUID.self) else {
             throw Abort(.badRequest)
         }
+        
         let foundList = try service.get(with: listID, from: req.db)
         
         return foundList.map { list in
@@ -38,7 +40,8 @@ extension ListController {
         }
     }
     
-    func createList(_ req: Request) throws -> EventLoopFuture<ListResponse<List>> {
+    func createList(_ req: Request) throws -> EventLoopFuture<ListResponse<List>>
+    {
         let decodedList = try req.content.decode(List.self)
         let createdList = try service.create(with: decodedList, to: req.db)
 
@@ -47,21 +50,22 @@ extension ListController {
         }
     }
     
-    func updateListById(_ req: Request) throws -> EventLoopFuture<ListResponse<List>> {
+    func updateListById(_ req: Request) throws -> EventLoopFuture<ListResponse<List>>
+    {
         guard let id = req.parameters.get("id", as: UUID.self) else {
             throw Abort(.badRequest)
         }
+        
         let decodedList = try req.content.decode(List.self)
-        print("decoded: ", decodedList)
         let updatedList = try service.update(with: id, decodedList, from: req.db)
-        print("updated: ", updatedList)
         
         return updatedList.map { list in
             ListResponse<List>(result: list, statusCode: .ok)
         }
     }
     
-    func deleteListById(_ req: Request) throws -> EventLoopFuture<DeleteResponse> {
+    func deleteListById(_ req: Request) throws -> EventLoopFuture<DeleteResponse>
+    {
         guard let id = req.parameters.get("id", as: UUID.self) else {
             throw Abort(.badRequest)
         }
@@ -69,15 +73,5 @@ extension ListController {
         let deletedList = try service.delete(with: id, from: req.db)
  
         return deletedList.map { return $0 }
-    }
-}
-
-struct DeleteResponse: Content {
-    let result: String
-    let statusCode: HTTPStatus
-    
-    init(result: String, statusCode: HTTPStatus) {
-        self.result = result
-        self.statusCode = statusCode
     }
 }

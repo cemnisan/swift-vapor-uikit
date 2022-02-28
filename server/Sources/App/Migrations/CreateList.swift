@@ -7,8 +7,10 @@
 
 import Fluent
 
-struct CreateList: Migration {
-    func prepare(on database: Database) -> EventLoopFuture<Void> {
+struct CreateList: Migration
+{
+    func prepare(on database: Database) -> EventLoopFuture<Void>
+    {
         database.schema("lists")
             .id()
             .field("title",
@@ -22,7 +24,8 @@ struct CreateList: Migration {
             .create()
     }
     
-    func revert(on database: Database) -> EventLoopFuture<Void> {
+    func revert(on database: Database) -> EventLoopFuture<Void>
+    {
         database.schema("lists").delete()
     }
 }

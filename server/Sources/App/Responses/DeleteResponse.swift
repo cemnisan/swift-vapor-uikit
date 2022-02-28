@@ -2,18 +2,18 @@
 //  File.swift
 //  
 //
-//  Created by Cem Nisan on 13.02.2022.
+//  Created by Cem Nisan on 28.02.2022.
 //
 
 import Vapor
 
-final class ListResponse<T>: Content where T: Content
+struct DeleteResponse: Content
 {
-    let result: T
+    let result: String
     let statusCode: HTTPStatus
     
     init(
-        result: T,
+        result: String,
         statusCode: HTTPStatus
     ) {
         self.result = result

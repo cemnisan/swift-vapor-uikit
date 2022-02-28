@@ -8,8 +8,8 @@
 import Vapor
 import Fluent
 
-protocol IListService {
-    
+protocol IListService
+{
     func get(from db: Database) throws -> EventLoopFuture<[List]>
     
     func get(with id: UUID,
